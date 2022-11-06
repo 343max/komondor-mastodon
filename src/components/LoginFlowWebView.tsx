@@ -7,6 +7,8 @@ type Props = {
   clientSecret: string
   redirectUri: string
   domain: string
+  onSuccess: (token: string, state: string) => void
+  onCanceled: () => void
 }
 
 WebBrowser.maybeCompleteAuthSession()
@@ -16,24 +18,35 @@ export const LoginFlowWebView: React.FC<Props> = ({
   clientSecret,
   redirectUri,
   domain,
+  onSuccess,
+  onCanceled,
 }) => {
   const [request, response, promptAsync] = useAuthRequest(
     {
       clientId,
       clientSecret,
       redirectUri,
-      scopes: ["read", "write", "follow", "push"],
+      scopes: ["read", "write", "follow"], // TODO: push
     },
     { authorizationEndpoint: `https://${domain}/oauth/authorize` }
   )
 
   React.useEffect(() => {
-    promptAsync()
-  }, [])
+    if (request) {
+      promptAsync()
+    }
+  }, [request])
 
   React.useEffect(() => {
     if (response) {
-      console.log(response)
+      if (response.type === "success") {
+        onSuccess(
+          response.params["code"] as string,
+          response.params["state"] as string
+        )
+      } else if (["cancel", "dismiss", "error"].includes(response.type)) {
+        onCanceled()
+      }
     }
   }, [response])
 

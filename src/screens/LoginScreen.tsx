@@ -16,7 +16,7 @@ export const LoginScreen: React.FC = () => {
     { clientId: string; clientSecret: string } | undefined
   >()
 
-  const { setOptions, goBack } = useNavigation()
+  const { goBack } = useNavigation()
 
   useHeaderOptions({
     headerTitle: "Add Account",
@@ -33,7 +33,6 @@ export const LoginScreen: React.FC = () => {
     const f = async () => {
       const redirectUri = makeRedirectUri()
       setRedirectUri(redirectUri)
-      console.log({ redirectUri })
       const masto = await mastoLogin({ url: `https://${domain}` })
 
       const app = await masto.apps.create({
@@ -48,10 +47,22 @@ export const LoginScreen: React.FC = () => {
     f().catch((error) => console.error(error))
   }
 
+  const onSuccess: React.ComponentProps<
+    typeof LoginFlowWebView
+  >["onSuccess"] = (token, state) => {
+    console.log({ token, state })
+  }
+
   return (
     <View style={tw`p-5 flex-col`}>
-      {app !== undefined && redirectUri && undefined ? (
-        <LoginFlowWebView {...app} redirectUri={redirectUri} domain={domain} />
+      {app !== undefined && redirectUri !== undefined ? (
+        <LoginFlowWebView
+          {...app}
+          redirectUri={redirectUri}
+          domain={domain}
+          onSuccess={onSuccess}
+          onCanceled={goBack}
+        />
       ) : null}
       <TextInput
         mode="outlined"
