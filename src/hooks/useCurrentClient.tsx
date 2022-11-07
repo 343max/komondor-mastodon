@@ -14,11 +14,15 @@ export const useCurrentClient = () => {
   >()
 
   useAsyncEffect(async () => {
-    const token = accountId
-      ? accountTokens.find(({ appId }) => appId === accountId)
-      : undefined
-    if (token) {
-      setCurrentClient(await getClient(token))
+    if (accountId == undefined) {
+      setCurrentClient(undefined)
+    } else {
+      const token = accountTokens.find(({ appId }) => appId === accountId)
+      if (token) {
+        const client = await getClient(token)
+        console.log(client)
+        setCurrentClient(client)
+      }
     }
   }, [accountId, accountTokens, getClient])
 

@@ -6,9 +6,12 @@ import { useHeaderOptions } from "../hooks/useHeaderOptions"
 import { useNavigation } from "@react-navigation/native"
 import { SafeCurrentClientProvider } from "../hooks/useSafeCurrentClient"
 import { TimelineView } from "../components/TimelineView"
+import { useStoredAccounts } from "../hooks/useStoredAccounts"
+import { useCurrentAccountId } from "../hooks/useCurrentAccountId"
 
 export const HomeTimelineScreen = () => {
-  const { navigate } = useNavigation()
+  const [, setCurrentAccountId] = useCurrentAccountId()
+  const { removeAllAccounts } = useStoredAccounts()
 
   useHeaderOptions({
     title: "Home",
@@ -18,7 +21,12 @@ export const HomeTimelineScreen = () => {
     headerRight: ({ tintColor }) => {
       return (
         <Pressable
-          onPress={() => navigate("Login")}
+          onPress={() => {
+            removeAllAccounts().then(() => {
+              setCurrentAccountId(undefined)
+              alert("deleted all accounts")
+            })
+          }}
           style={({ pressed }) => ({
             opacity: pressed ? 0.5 : 1,
           })}
@@ -26,7 +34,7 @@ export const HomeTimelineScreen = () => {
           <SimpleLineIcons
             name="login"
             size={22}
-            color={tintColor}
+            color={"#fff"}
             style={{ marginRight: 15 }}
           />
         </Pressable>

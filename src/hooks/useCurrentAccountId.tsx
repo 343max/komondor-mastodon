@@ -2,10 +2,13 @@ import React from "react"
 import * as Store from "../lib/currentAccountIdStore"
 import { useAsyncEffect } from "./useAsyncEffect"
 
-export const useCurrentAccountId = (): [
-  string | undefined,
-  (accountId: string) => void
-] => {
+type ContextType = [string | undefined, (accountId: string | undefined) => void]
+
+const Context = React.createContext<ContextType>([undefined, () => {}])
+
+export const CurrentAccountIdProvider: React.FC<React.PropsWithChildren> = ({
+  children,
+}) => {
   const [currentAccountId, setCurrentAccountId] = React.useState<
     string | undefined
   >()
@@ -14,9 +17,9 @@ export const useCurrentAccountId = (): [
     setCurrentAccountId((await Store.getCurrentAccountId()) ?? undefined)
   }, [])
 
-  return [
+  const value: ContextType = [
     currentAccountId,
-    async (accountId: string | undefined) => {
+    async (accountId) => {
       if (accountId) {
         await Store.setCurrentAccountId(accountId)
       } else {
@@ -25,4 +28,8 @@ export const useCurrentAccountId = (): [
       setCurrentAccountId(accountId)
     },
   ]
+
+  return <Context.Provider value={value}>{children}</Context.Provider>
 }
+
+export const useCurrentAccountId = (): ContextType => React.useContext(Context)

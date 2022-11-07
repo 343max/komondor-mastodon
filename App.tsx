@@ -9,23 +9,26 @@ import { StoredAccountsProvider } from "./src/hooks/useStoredAccounts"
 import { StoredAccountMetaProvider } from "./src/hooks/useStoredMeta"
 import { ClientsProvider } from "./src/hooks/useClients"
 import { AccountMetaUpdater } from "./src/components/AccountMetaUpdater"
+import { CurrentAccountIdProvider } from "./src/hooks/useCurrentAccountId"
 
 export default function App() {
   const colorScheme = useColorScheme()
 
   return (
     <Provider>
-      <StoredAccountsProvider>
-        <StoredAccountMetaProvider>
-          <ClientsProvider>
-            <AccountMetaUpdater />
-            <SafeAreaProvider>
-              <Navigation colorScheme={colorScheme} />
-              <StatusBar />
-            </SafeAreaProvider>
-          </ClientsProvider>
-        </StoredAccountMetaProvider>
-      </StoredAccountsProvider>
+      <CurrentAccountIdProvider>
+        <StoredAccountsProvider>
+          <StoredAccountMetaProvider>
+            <ClientsProvider>
+              <AccountMetaUpdater />
+              <SafeAreaProvider>
+                <Navigation colorScheme={colorScheme} />
+                <StatusBar />
+              </SafeAreaProvider>
+            </ClientsProvider>
+          </StoredAccountMetaProvider>
+        </StoredAccountsProvider>
+      </CurrentAccountIdProvider>
     </Provider>
   )
 }

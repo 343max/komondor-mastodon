@@ -14,6 +14,7 @@ type ContextType = {
     state: string
   }) => Promise<StoredAccount>
   removeAccount: (accountId: string) => Promise<void>
+  removeAllAccounts: () => Promise<void>
 }
 
 const Context = React.createContext<ContextType>(
@@ -38,6 +39,10 @@ export const StoredAccountsProvider: React.FC<React.PropsWithChildren> = ({
       const accounts = accountTokens.filter(({ appId }) => appId != accountId)
       await AccountTokenStore.setAccounts(accounts)
       setAccountTokens(accounts)
+    },
+    removeAllAccounts: async () => {
+      await AccountTokenStore.deleteAccounts()
+      setAccountTokens([])
     },
   }
 
