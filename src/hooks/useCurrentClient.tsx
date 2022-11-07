@@ -20,7 +20,6 @@ export const useCurrentClient = () => {
       const token = accountTokens.find(({ appId }) => appId === accountId)
       if (token) {
         const client = await getClient(token)
-        console.log(client)
         setCurrentClient(client)
       }
     }

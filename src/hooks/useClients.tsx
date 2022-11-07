@@ -38,7 +38,6 @@ export const ClientsProvider: React.FC<React.PropsWithChildren> = ({
       if (clients[account.appId]) {
         return clients[account.appId]
       } else {
-        alert(JSON.stringify(account))
         const client = await mastoLogin({
           url: `https://${account.domain}`,
           accessToken: account.token,
