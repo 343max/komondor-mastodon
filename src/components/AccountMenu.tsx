@@ -1,6 +1,6 @@
 import React from "react"
-import { Pressable, View, Image } from "react-native"
-import { Menu } from "react-native-paper"
+import { Pressable } from "react-native"
+import { Menu, useTheme } from "react-native-paper"
 import { useCurrentAccountId } from "../hooks/useCurrentAccountId"
 import { useKnownAccounts } from "../hooks/useKnownAccounts"
 import { tw } from "../lib/tw"
@@ -20,6 +20,7 @@ const AccountHeaderButton: React.FC = () => {
   const [currentAccountId, setCurrentAccountId] = useCurrentAccountId()
   const knowAccounts = useKnownAccounts()
   const { navigate } = useNavigation()
+  const { colors } = useTheme()
 
   const myAccount = React.useMemo(
     () => knowAccounts.find(({ appId }) => appId === currentAccountId),
@@ -64,7 +65,7 @@ const AccountHeaderButton: React.FC = () => {
           dismiss()
         }}
         leadingIcon={() => (
-          <SimpleLineIcons name="wrench" size={24} color="white" />
+          <SimpleLineIcons name="wrench" size={24} color={colors.primary} />
         )}
       />
     </Menu>
