@@ -5,18 +5,25 @@ import { tw } from "../lib/tw"
 import { domainRegex } from "../lib/domainRegex"
 import { useNavigation } from "@react-navigation/native"
 import { useHeaderOptions } from "../hooks/useHeaderOptions"
-import { makeRedirectUri } from "expo-auth-session"
+import { makeRedirectUri, exchangeCodeAsync } from "expo-auth-session"
 import { mastoLogin } from "../lib/mastoLogin"
 import { LoginFlowWebView } from "../components/LoginFlowWebView"
+import { useStoredAccounts } from "../hooks/useStoredAccounts"
+import { useCurrentAccountId } from "../hooks/useCurrentAccountId"
+import { getOAuthEndpoints } from "../lib/getOAuthEndpoints"
 
 export const LoginScreen: React.FC = () => {
   const [domain, setDomain] = React.useState("mastodon.komondor.dev")
-  const [redirectUri, setRedirectUri] = React.useState<string | undefined>()
+  const [redirectUri] = React.useState(makeRedirectUri)
   const [app, setApp] = React.useState<
     { clientId: string; clientSecret: string } | undefined
   >()
 
   const { goBack } = useNavigation()
+  const { addAccount } = useStoredAccounts()
+  const [, setCurrentAccountId] = useCurrentAccountId()
+
+  const scopes = ["read", "write", "follow", "push"]
 
   useHeaderOptions({
     headerTitle: "Add Account",
@@ -31,13 +38,11 @@ export const LoginScreen: React.FC = () => {
     }
 
     const f = async () => {
-      const redirectUri = makeRedirectUri()
-      setRedirectUri(redirectUri)
       const masto = await mastoLogin({ url: `https://${domain}` })
 
       const app = await masto.apps.create({
         clientName: "Komondor",
-        scopes: "read write follow",
+        scopes: scopes.join(" "),
         redirectUris: redirectUri,
       })
 
@@ -49,8 +54,28 @@ export const LoginScreen: React.FC = () => {
 
   const onSuccess: React.ComponentProps<
     typeof LoginFlowWebView
-  >["onSuccess"] = (token, state) => {
-    console.log({ token, state })
+  >["onSuccess"] = (code, state) => {
+    const f = async () => {
+      const authTokens = await exchangeCodeAsync(
+        {
+          code,
+          redirectUri,
+          clientId: app!.clientId,
+          clientSecret: app!.clientSecret,
+          scopes,
+        },
+        getOAuthEndpoints(domain)
+      )
+      const account = await addAccount({
+        domain,
+        token: authTokens.accessToken,
+        state,
+      })
+      await setCurrentAccountId(account.appId)
+      goBack()
+    }
+
+    f()
   }
 
   return (
@@ -62,6 +87,7 @@ export const LoginScreen: React.FC = () => {
           domain={domain}
           onSuccess={onSuccess}
           onCanceled={goBack}
+          scopes={scopes}
         />
       ) : null}
       <TextInput

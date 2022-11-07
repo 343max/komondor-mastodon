@@ -4,6 +4,8 @@ import { Pressable } from "react-native"
 import { NoAccountView } from "../components/NoAccountView"
 import { useHeaderOptions } from "../hooks/useHeaderOptions"
 import { useNavigation } from "@react-navigation/native"
+import { SafeCurrentClientProvider } from "../hooks/useSafeCurrentClient"
+import { TimelineView } from "../components/TimelineView"
 
 export const HomeTimelineScreen = () => {
   const { navigate } = useNavigation()
@@ -32,5 +34,9 @@ export const HomeTimelineScreen = () => {
     },
   })
 
-  return <NoAccountView />
+  return (
+    <SafeCurrentClientProvider fallback={<NoAccountView />}>
+      <TimelineView timeline={"home"} />
+    </SafeCurrentClientProvider>
+  )
 }

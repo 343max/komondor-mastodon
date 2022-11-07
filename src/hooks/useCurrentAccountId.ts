@@ -2,7 +2,10 @@ import React from "react"
 import * as Store from "../lib/currentAccountIdStore"
 import { useAsyncEffect } from "./useAsyncEffect"
 
-export const useCurrentAccountId = () => {
+export const useCurrentAccountId = (): [
+  string | undefined,
+  (accountId: string) => void
+] => {
   const [currentAccountId, setCurrentAccountId] = React.useState<
     string | undefined
   >()

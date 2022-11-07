@@ -1,6 +1,7 @@
 import * as WebBrowser from "expo-web-browser"
 import { useAuthRequest } from "expo-auth-session"
 import React from "react"
+import { getOAuthEndpoints } from "../lib/getOAuthEndpoints"
 
 type Props = {
   clientId: string
@@ -9,6 +10,7 @@ type Props = {
   domain: string
   onSuccess: (token: string, state: string) => void
   onCanceled: () => void
+  scopes: string[]
 }
 
 WebBrowser.maybeCompleteAuthSession()
@@ -20,15 +22,16 @@ export const LoginFlowWebView: React.FC<Props> = ({
   domain,
   onSuccess,
   onCanceled,
+  scopes,
 }) => {
   const [request, response, promptAsync] = useAuthRequest(
     {
       clientId,
       clientSecret,
       redirectUri,
-      scopes: ["read", "write", "follow"], // TODO: push
+      scopes,
     },
-    { authorizationEndpoint: `https://${domain}/oauth/authorize` }
+    getOAuthEndpoints(domain)
   )
 
   React.useEffect(() => {
