@@ -30,6 +30,6 @@ const generateId = (): string =>
     .map((b): string => b.toString(16).padStart(2, "0"))
     .join("")
 
-export const storeableAccount = (
-  options: Omit<StoredAccount, "id">
+export const storableAccount = (
+  options: Omit<StoredAccount, "appId">
 ): StoredAccount => ({ ...options, appId: generateId() })

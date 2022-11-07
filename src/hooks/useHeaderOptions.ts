@@ -1,8 +1,8 @@
 import React from "react"
-import { HeaderOptions } from "@react-navigation/elements"
 import { useNavigation } from "@react-navigation/native"
+import { BottomTabNavigationOptions } from "@react-navigation/bottom-tabs"
 
-export const useHeaderOptions = (options: HeaderOptions) => {
+export const useHeaderOptions = (options: BottomTabNavigationOptions) => {
   const { setOptions } = useNavigation()
 
   React.useEffect(() => {
