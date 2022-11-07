@@ -35,6 +35,8 @@ const AccountHeaderButton: React.FC = () => {
     <Menu
       visible={visible}
       onDismiss={dismiss}
+      style={tw`mt-9`}
+      contentStyle={tw`rounded-lg`}
       anchor={
         <Pressable
           onPress={() => setVisible(true)}
