@@ -1,6 +1,6 @@
 import React from "react"
 import { View } from "react-native"
-import { Button, TextInput } from "react-native-paper"
+import { Button, HelperText, TextInput } from "react-native-paper"
 import { tw } from "../lib/tw"
 import { domainRegex } from "../lib/domainRegex"
 import { useNavigation } from "@react-navigation/native"
@@ -13,11 +13,13 @@ import { useCurrentAccountId } from "../hooks/useCurrentAccountId"
 import { getOAuthEndpoints } from "../lib/getOAuthEndpoints"
 
 export const LoginScreen: React.FC = () => {
-  const [domain, setDomain] = React.useState("mastodon.komondor.dev")
+  const [domain, setDomain] = React.useState("")
   const [redirectUri] = React.useState(makeRedirectUri)
   const [app, setApp] = React.useState<
     { clientId: string; clientSecret: string } | undefined
   >()
+
+  const [error, setError] = React.useState<string | undefined>(undefined)
 
   const { goBack } = useNavigation()
   const { addAccount } = useStoredAccounts()
@@ -45,11 +47,13 @@ export const LoginScreen: React.FC = () => {
         scopes: scopes.join(" "),
         redirectUris: redirectUri,
       })
-
       setApp({ clientId: app.clientId!, clientSecret: app.clientSecret! })
     }
 
-    f().catch((error) => console.error(error))
+    f().catch((error) => {
+      console.error(error)
+      setError(`${error}`)
+    })
   }
 
   const onSuccess: React.ComponentProps<
@@ -101,6 +105,9 @@ export const LoginScreen: React.FC = () => {
         autoFocus={true}
         onSubmitEditing={handleLogin}
       />
+      <HelperText type="error" visible={error !== undefined}>
+        {error}
+      </HelperText>
       <View style={tw`mt-4 mx-4`}>
         <Button mode="contained" disabled={!validDomain} onPress={handleLogin}>
           Login
