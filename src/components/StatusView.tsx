@@ -55,7 +55,10 @@ export const StatusView: React.FC<Props> = ({ status, style }) => {
           {displayStatus.mediaAttachments.length > 0 ? (
             <View style={tw`mt-3`}>
               {displayStatus.mediaAttachments.map((attachment) => (
-                <MediaAttachmentView attachment={attachment} />
+                <MediaAttachmentView
+                  attachment={attachment}
+                  key={attachment.id}
+                />
               ))}
             </View>
           ) : null}
