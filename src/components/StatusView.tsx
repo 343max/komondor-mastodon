@@ -1,12 +1,13 @@
-import { EvilIcons, SimpleLineIcons } from "@expo/vector-icons"
+import { EvilIcons } from "@expo/vector-icons"
 import { Status } from "masto"
 import React from "react"
-import { View, StyleProp, ViewStyle, TouchableOpacity } from "react-native"
+import { View, StyleProp, ViewStyle } from "react-native"
 import { Text, useTheme } from "react-native-paper"
 import { tw } from "../lib/tw"
 import { Avatar } from "./Avatar"
 import { MediaAttachmentView } from "./MediaAttachmentView"
 import { HtmlText } from "./HtmlText"
+import { StatusActionBar } from "./StatusActionBar"
 
 type Props = {
   status: Status
@@ -43,31 +44,22 @@ export const StatusView: React.FC<Props> = ({ status, style }) => {
             setInnerWidth(nativeEvent.layout.width)
           }
         >
-          <Text variant="titleSmall">
-            {displayStatus.account.displayName}
-            <TouchableOpacity
-              onPress={() => {
-                console.log(JSON.stringify(status, null, 2))
-              }}
-            >
-              <SimpleLineIcons
-                name="wrench"
-                size={12}
-                color={colors.primary}
-                style={tw`pl-2`}
-              />
-            </TouchableOpacity>
-          </Text>
+          <Text variant="titleSmall">{displayStatus.account.displayName}</Text>
           <Text variant="titleSmall">{displayStatus.account.acct}</Text>
           {displayStatus.content.length > 0 ? (
             <HtmlText
-              style={{ width: innerWidth }}
+              style={[{ width: innerWidth }]}
               text={displayStatus.content}
             />
           ) : null}
-          {displayStatus.mediaAttachments.map((attachment) => (
-            <MediaAttachmentView attachment={attachment} />
-          ))}
+          {displayStatus.mediaAttachments.length > 0 ? (
+            <View style={tw`mt-3`}>
+              {displayStatus.mediaAttachments.map((attachment) => (
+                <MediaAttachmentView attachment={attachment} />
+              ))}
+            </View>
+          ) : null}
+          <StatusActionBar status={status} style={tw`mt-2`} />
         </View>
       </View>
     </View>
