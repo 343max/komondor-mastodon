@@ -55,6 +55,7 @@ const AccountHeaderButton: React.FC = () => {
         .filter(({ appId }) => appId !== currentAccountId)
         .map((a) => (
           <Menu.Item
+            key={a.appId}
             onPress={() => {
               setCurrentAccountId(a.appId)
               dismiss()
