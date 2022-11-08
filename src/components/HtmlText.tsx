@@ -2,6 +2,7 @@ import { Text } from "react-native-paper"
 import { parse, Node, HTMLElement } from "node-html-parser"
 import { StyleProp, TextStyle, View } from "react-native"
 import { tw } from "../lib/tw"
+import { useStatusLinkHandler } from "../hooks/useStatusLinkHandler"
 
 type Props = {
   text: string
@@ -10,6 +11,7 @@ type Props = {
 
 export const HtmlText: React.FC<Props> = ({ text, style }) => {
   const root = parse(text)
+  const handleLink = useStatusLinkHandler()
 
   const renderViews = (
     node: HTMLElement | Node,
@@ -36,7 +38,7 @@ export const HtmlText: React.FC<Props> = ({ text, style }) => {
         return <Text>{"\n"}</Text>
       } else if (node.tagName === "A") {
         return (
-          <Text onPress={() => alert(JSON.stringify(node.attributes))}>
+          <Text onPress={() => handleLink(node.attributes)}>
             {node.childNodes.map((n, i) =>
               renderViews(n, i, tw`text-blue-500`)
             )}
