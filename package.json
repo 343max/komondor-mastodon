@@ -33,6 +33,7 @@
     "expo-system-ui": "~1.3.0",
     "expo-web-browser": "~11.0.0",
     "masto": "^4.4.1",
+    "node-html-parser": "^6.1.1",
     "react": "18.0.0",
     "react-dom": "18.0.0",
     "react-native": "0.69.6",

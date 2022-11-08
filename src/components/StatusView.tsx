@@ -6,6 +6,7 @@ import { Text, useTheme } from "react-native-paper"
 import { tw } from "../lib/tw"
 import { Avatar } from "./Avatar"
 import { MediaAttachmentView } from "./MediaAttachmentView"
+import { HtmlText } from "./HtmlText"
 
 type Props = {
   status: Status
@@ -58,7 +59,12 @@ export const StatusView: React.FC<Props> = ({ status, style }) => {
             </TouchableOpacity>
           </Text>
           <Text variant="titleSmall">{displayStatus.account.acct}</Text>
-          <Text style={{ width: innerWidth }}>{displayStatus.content}</Text>
+          {displayStatus.content.length > 0 ? (
+            <HtmlText
+              style={{ width: innerWidth }}
+              text={displayStatus.content}
+            />
+          ) : null}
           {displayStatus.mediaAttachments.map((attachment) => (
             <MediaAttachmentView attachment={attachment} />
           ))}
