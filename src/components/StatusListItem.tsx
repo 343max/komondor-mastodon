@@ -1,4 +1,3 @@
-import { View } from "react-native"
 import { tw } from "../lib/tw"
 import { StatusView } from "./StatusView"
 
