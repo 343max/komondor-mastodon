@@ -9,10 +9,12 @@ import { useStoredAccounts } from "../hooks/useStoredAccounts"
 import { useCurrentAccountId } from "../hooks/useCurrentAccountId"
 import { tw } from "../lib/tw"
 import { acountHeaderButton } from "../components/AccountMenu"
+import { useTheme } from "react-native-paper"
 
 export const HomeTimelineScreen = () => {
   const [, setCurrentAccountId] = useCurrentAccountId()
   const { removeAllAccounts } = useStoredAccounts()
+  const { colors } = useTheme()
 
   useHeaderOptions({
     title: "Home",
@@ -20,7 +22,7 @@ export const HomeTimelineScreen = () => {
       <SimpleLineIcons name="home" color={color} size={22} />
     ),
     headerLeft: acountHeaderButton,
-    headerRight: ({ tintColor }) => {
+    headerRight: () => {
       return (
         <Pressable
           onPress={() => {
@@ -33,7 +35,12 @@ export const HomeTimelineScreen = () => {
             opacity: pressed ? 0.5 : 1,
           })}
         >
-          <AntDesign name="delete" size={24} color="white" style={tw`mx-4`} />
+          <AntDesign
+            name="delete"
+            size={24}
+            color={colors.primary}
+            style={tw`mx-4`}
+          />
         </Pressable>
       )
     },

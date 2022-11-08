@@ -3,7 +3,7 @@ import { useAsyncEffect } from "../hooks/useAsyncEffect"
 import React from "react"
 import { Status } from "masto"
 import { FlashList } from "@shopify/flash-list"
-import { StatusView } from "./StatusView"
+import { StatusListItem } from "./StatusListItem"
 
 type Props = {
   timeline: "home" | "public"
@@ -18,15 +18,22 @@ export const TimelineView: React.FC<Props> = ({ timeline }) => {
   const [statuses, setStatuses] = React.useState<
     IteratorResult<Status[], Status[]>
   >({ value: [] })
+  const [refreshing, setRefreshing] = React.useState(false)
 
-  useAsyncEffect(async () => {
+  const refresh = async () => {
+    setRefreshing(true)
     setStatuses(await paginator.next())
-  }, [])
+    setRefreshing(false)
+  }
+
+  useAsyncEffect(refresh, [client])
 
   return (
     <FlashList
+      refreshing={refreshing}
+      onRefresh={refresh}
       data={statuses.value}
-      renderItem={({ item }) => <StatusView status={item} />}
+      renderItem={({ item }) => <StatusListItem status={item} />}
     />
   )
 }
