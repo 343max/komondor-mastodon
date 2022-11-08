@@ -44,6 +44,7 @@ const GifvAttachment: React.FC<Props> = ({ attachment }) => {
           )
         }}
         shouldPlay
+        isLooping
         source={{ uri: attachment.url }}
         resizeMode={ResizeMode.CONTAIN}
         style={[tw`w-full`, { height }]}
