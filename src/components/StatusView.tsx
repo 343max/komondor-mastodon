@@ -14,10 +14,14 @@ type Props = {
 
 export const StatusView: React.FC<Props> = ({ status, style }) => {
   const { colors } = useTheme()
+  const [innerWidth, setInnerWidth] = React.useState(0)
   return (
     <View style={[tw`flex-row w-full`, style]}>
       <Avatar uri={status.account.avatarStatic} size={30} style={tw`mr-3`} />
-      <View style={tw`w-full`}>
+      <View
+        style={tw`grow`}
+        onLayout={({ nativeEvent }) => setInnerWidth(nativeEvent.layout.width)}
+      >
         <Text variant="titleSmall">
           {status.account.displayName}
           <TouchableOpacity
@@ -37,7 +41,7 @@ export const StatusView: React.FC<Props> = ({ status, style }) => {
         {status.reblog ? (
           <StatusView status={status.reblog} style={tw`mt-2`} />
         ) : (
-          <Text>{status.content}</Text>
+          <Text style={{ width: innerWidth }}>{status.content}</Text>
         )}
         {status.mediaAttachments.map((attachment) => (
           <MediaAttachmentView attachment={attachment} />

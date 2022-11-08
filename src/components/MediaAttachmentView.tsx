@@ -53,7 +53,7 @@ const GifvAttachment: React.FC<Props> = ({ attachment }) => {
   }
 }
 const UnsupportedAttachment: React.FC<Props> = ({ attachment }) => {
-  return <Text>{attachment.type}</Text>
+  return <Text>⚠️ unsupported media type: ${attachment.type}</Text>
 }
 
 export const MediaAttachmentView: React.FC<Props> = ({ attachment }) => {
