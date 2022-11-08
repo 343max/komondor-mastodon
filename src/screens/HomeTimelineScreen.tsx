@@ -22,28 +22,6 @@ export const HomeTimelineScreen = () => {
       <SimpleLineIcons name="home" color={color} size={22} />
     ),
     headerLeft: acountHeaderButton,
-    headerRight: () => {
-      return (
-        <Pressable
-          onPress={() => {
-            removeAllAccounts().then(() => {
-              setCurrentAccountId(undefined)
-              alert("deleted all accounts")
-            })
-          }}
-          style={({ pressed }) => ({
-            opacity: pressed ? 0.5 : 1,
-          })}
-        >
-          <AntDesign
-            name="delete"
-            size={24}
-            color={colors.primary}
-            style={tw`mx-4`}
-          />
-        </Pressable>
-      )
-    },
   })
 
   return (

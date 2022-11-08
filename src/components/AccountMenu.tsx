@@ -1,13 +1,14 @@
 import React from "react"
-import { Pressable } from "react-native"
+import { Pressable, Alert } from "react-native"
 import { Menu, useTheme } from "react-native-paper"
 import { useCurrentAccountId } from "../hooks/useCurrentAccountId"
 import { useKnownAccounts } from "../hooks/useKnownAccounts"
 import { tw } from "../lib/tw"
 import { fullUserName } from "../lib/fullUsername"
-import { SimpleLineIcons } from "@expo/vector-icons"
+import { AntDesign, SimpleLineIcons } from "@expo/vector-icons"
 import { useNavigation } from "@react-navigation/native"
 import { Avatar } from "./Avatar"
+import { useStoredAccounts } from "../hooks/useStoredAccounts"
 
 export const acountHeaderButton = (props: {
   tintColor?: string
@@ -19,6 +20,8 @@ export const acountHeaderButton = (props: {
 const AccountHeaderButton: React.FC = () => {
   const [currentAccountId, setCurrentAccountId] = useCurrentAccountId()
   const knowAccounts = useKnownAccounts()
+  const { removeAllAccounts } = useStoredAccounts()
+
   const { navigate } = useNavigation()
   const { colors } = useTheme()
 
@@ -68,6 +71,31 @@ const AccountHeaderButton: React.FC = () => {
         }}
         leadingIcon={() => (
           <SimpleLineIcons name="wrench" size={24} color={colors.primary} />
+        )}
+      />
+      <Menu.Item
+        title="Remove all accounts..."
+        onPress={() => {
+          Alert.alert(
+            "Remove All Accounts?",
+            "This will remove all logged in accounts from the app. Are you sure?",
+            [
+              { text: "Cancel", style: "cancel" },
+              {
+                text: "Remove All Accounts",
+                style: "destructive",
+                onPress: () => {
+                  removeAllAccounts().then(() => {
+                    setCurrentAccountId(undefined)
+                    Alert.alert("Removed All Accounts")
+                  })
+                },
+              },
+            ]
+          )
+        }}
+        leadingIcon={() => (
+          <AntDesign name="delete" size={24} color={colors.error} />
         )}
       />
     </Menu>
