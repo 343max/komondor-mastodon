@@ -13,6 +13,7 @@ export const HtmlText: React.FC<Props> = ({ text, style }) => {
 
   const renderViews = (
     node: HTMLElement | Node,
+    index: number,
     textStyle: StyleProp<TextStyle> | undefined
   ): React.ReactElement<any, any> | null => {
     if (!(node instanceof HTMLElement)) {
@@ -21,29 +22,33 @@ export const HtmlText: React.FC<Props> = ({ text, style }) => {
       if (node.tagName === null) {
         return (
           <Text style={style}>
-            {node.childNodes.map((n) => renderViews(n, textStyle))}
+            {node.childNodes.map((n, i) => renderViews(n, i, textStyle))}
           </Text>
         )
       } else if (node.tagName === "P") {
         return (
           <Text>
-            {node.childNodes.map((n) => renderViews(n, textStyle))}
-            {"\n\n"}
+            {index > 0 ? "\n\n" : ""}
+            {node.childNodes.map((n, i) => renderViews(n, i, textStyle))}
           </Text>
         )
       } else if (node.tagName === "BR") {
         return <Text>{"\n"}</Text>
       } else if (node.tagName === "A") {
         return (
-          <Text onPress={() => console.log(node.structure)}>
-            {node.childNodes.map((n) => renderViews(n, tw`text-blue-500`))}
+          <Text onPress={() => alert(JSON.stringify(node.attributes))}>
+            {node.childNodes.map((n, i) =>
+              renderViews(n, i, tw`text-blue-500`)
+            )}
           </Text>
         )
       } else if (node.tagName === "SPAN") {
         if ((node.attributes["class"] ?? "").includes("invisible")) {
           return null
         } else {
-          return <>{node.childNodes.map((n) => renderViews(n, textStyle))}</>
+          return (
+            <>{node.childNodes.map((n, i) => renderViews(n, i, textStyle))}</>
+          )
         }
       } else {
         console.error(`unknown tag: ${node.tagName}`)
@@ -52,5 +57,5 @@ export const HtmlText: React.FC<Props> = ({ text, style }) => {
     }
   }
 
-  return <>{renderViews(root, undefined)}</>
+  return <>{renderViews(root, 0, undefined)}</>
 }
