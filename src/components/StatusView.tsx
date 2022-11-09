@@ -36,7 +36,7 @@ export const StatusView: React.FC<Props> = ({ status, style }) => {
         <Avatar
           uri={displayStatus.account.avatarStatic}
           size={30}
-          style={tw`mr-3`}
+          style={tw`mr-3 mt-[4px]`}
         />
         <View
           style={tw`grow`}
@@ -44,8 +44,14 @@ export const StatusView: React.FC<Props> = ({ status, style }) => {
             setInnerWidth(nativeEvent.layout.width)
           }
         >
-          <Text variant="titleSmall">{displayStatus.account.displayName}</Text>
-          <Text variant="titleSmall">{displayStatus.account.acct}</Text>
+          {displayStatus.account.displayName !== "" ? (
+            <Text variant="titleSmall">
+              {displayStatus.account.displayName}
+            </Text>
+          ) : null}
+          <Text variant="titleSmall" style={tw`opacity-60`}>
+            {`@${displayStatus.account.acct}`}
+          </Text>
           {displayStatus.content.length > 0 ? (
             <HtmlText
               style={[{ width: innerWidth }]}
