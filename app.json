@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "komondor-mastodon",
-    "slug": "komondor-mastodon",
+    "name": "Komondor",
+    "slug": "komondor",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -15,20 +15,25 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "app.komondor.mastodon"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "app.komondor.mastodon"
     },
     "web": {
       "favicon": "./assets/images/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "55f72a26-e82e-49a0-9e7b-68d5efd0bc2d"
+      }
     }
   }
 }
