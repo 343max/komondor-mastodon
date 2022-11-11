@@ -8,12 +8,13 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import * as React from "react"
 import { ColorSchemeName } from "react-native"
 
-import useColorScheme from "../hooks/useColorScheme"
 import { RootStackParamList, RootTabParamList } from "../../types"
 import { LoginScreen } from "../screens/LoginScreen"
 import { HomeTimelineScreen } from "../screens/HomeTimelineScreen"
 import { useTheme } from "react-native-paper"
 import { NotificationsScreen } from "../screens/NotificationsScreen"
+import { acountHeaderButton } from "../components/AccountMenu"
+import { Octicons } from "@expo/vector-icons"
 
 export default function Navigation({
   colorScheme,
@@ -57,8 +58,6 @@ function RootNavigator() {
 const BottomTab = createBottomTabNavigator<RootTabParamList>()
 
 function BottomTabNavigator() {
-  const colorScheme = useColorScheme()
-
   const { colors } = useTheme()
 
   return (
@@ -68,8 +67,28 @@ function BottomTabNavigator() {
         tabBarActiveTintColor: colors.primary,
       }}
     >
-      <BottomTab.Screen name="HomeTimeline" component={HomeTimelineScreen} />
-      <BottomTab.Screen name="Notifications" component={NotificationsScreen} />
+      <BottomTab.Screen
+        name="HomeTimeline"
+        component={HomeTimelineScreen}
+        options={{
+          title: "Home",
+          tabBarIcon: ({ color }) => (
+            <Octicons name="home" size={26} color={color} />
+          ),
+          headerLeft: acountHeaderButton,
+        }}
+      />
+      <BottomTab.Screen
+        name="Notifications"
+        component={NotificationsScreen}
+        options={{
+          title: "Notifications",
+          tabBarIcon: ({ color }) => (
+            <Octicons name="bell" size={26} color={color} />
+          ),
+          headerLeft: acountHeaderButton,
+        }}
+      />
     </BottomTab.Navigator>
   )
 }
