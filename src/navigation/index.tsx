@@ -14,7 +14,7 @@ import { HomeTimelineScreen } from "../screens/HomeTimelineScreen"
 import { useTheme } from "react-native-paper"
 import { NotificationsScreen } from "../screens/NotificationsScreen"
 import { acountHeaderButton } from "../components/AccountMenu"
-import { Octicons } from "@expo/vector-icons"
+import { Ionicons } from "@expo/vector-icons"
 
 export default function Navigation({
   colorScheme,
@@ -73,7 +73,7 @@ function BottomTabNavigator() {
         options={{
           title: "Home",
           tabBarIcon: ({ color }) => (
-            <Octicons name="home" size={26} color={color} />
+            <Ionicons name="home-outline" size={28} color={color} />
           ),
           headerLeft: acountHeaderButton,
         }}
@@ -84,7 +84,11 @@ function BottomTabNavigator() {
         options={{
           title: "Notifications",
           tabBarIcon: ({ color }) => (
-            <Octicons name="bell" size={26} color={color} />
+            <Ionicons
+              name="ios-notifications-outline"
+              size={28}
+              color={color}
+            />
           ),
           headerLeft: acountHeaderButton,
         }}
