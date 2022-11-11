@@ -13,6 +13,7 @@ import { RootStackParamList, RootTabParamList } from "../../types"
 import { LoginScreen } from "../screens/LoginScreen"
 import { HomeTimelineScreen } from "../screens/HomeTimelineScreen"
 import { useTheme } from "react-native-paper"
+import { NotificationsScreen } from "../screens/NotificationsScreen"
 
 export default function Navigation({
   colorScheme,
@@ -68,6 +69,7 @@ function BottomTabNavigator() {
       }}
     >
       <BottomTab.Screen name="HomeTimeline" component={HomeTimelineScreen} />
+      <BottomTab.Screen name="Notifications" component={NotificationsScreen} />
     </BottomTab.Navigator>
   )
 }
