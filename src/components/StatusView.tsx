@@ -8,6 +8,7 @@ import { Avatar } from "./Avatar"
 import { MediaAttachmentView } from "./MediaAttachmentView"
 import { HtmlText } from "./HtmlText"
 import { StatusActionBar } from "./StatusActionBar"
+import { StatusContentView } from "./StatusContentView"
 
 type Props = {
   status: Status
@@ -47,19 +48,7 @@ export const StatusView: React.FC<Props> = ({ status, style, showActions }) => {
           <Text variant="titleSmall" style={tw`opacity-60`}>
             {`@${displayStatus.account.acct}`}
           </Text>
-          {displayStatus.content.length > 0 ? (
-            <HtmlText text={displayStatus.content} />
-          ) : null}
-          {displayStatus.mediaAttachments.length > 0 ? (
-            <View style={tw`mt-3`}>
-              {displayStatus.mediaAttachments.map((attachment) => (
-                <MediaAttachmentView
-                  attachment={attachment}
-                  key={attachment.id}
-                />
-              ))}
-            </View>
-          ) : null}
+          <StatusContentView status={displayStatus} />
           {showActions ? (
             <StatusActionBar status={status} style={tw`mt-2`} />
           ) : null}

@@ -4,6 +4,7 @@ import { Text } from "react-native-paper"
 import { tw } from "../lib/tw"
 import { Avatar } from "./Avatar"
 import { StatusView } from "./StatusView"
+import { StatusContentView } from "./StatusContentView"
 
 type Props = { notification: Notification }
 
@@ -31,17 +32,13 @@ export const NotificationView: React.FC<Props> = ({ notification }) => {
       <View style={tw`flex-row`}>
         <Avatar
           uri={notification.account.avatarStatic}
-          size={28}
+          size={30}
           style={tw`mr-2`}
         />
         <View style={tw`flex-shrink-1 flex-grow`}>
           <Text style={tw`flex-shrink-1`}>{getDescription(notification)}</Text>
           {notification.status ? (
-            <StatusView
-              style={tw`w-full`}
-              status={notification.status}
-              showActions={false}
-            />
+            <StatusContentView status={notification.status} style={tw`mt-2`} />
           ) : null}
         </View>
       </View>
