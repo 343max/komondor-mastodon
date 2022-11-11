@@ -12,9 +12,10 @@ import { StatusActionBar } from "./StatusActionBar"
 type Props = {
   status: Status
   style?: StyleProp<ViewStyle> | undefined
+  showActions: boolean
 }
 
-export const StatusView: React.FC<Props> = ({ status, style }) => {
+export const StatusView: React.FC<Props> = ({ status, style, showActions }) => {
   const { colors } = useTheme()
   const [innerWidth, setInnerWidth] = React.useState(0)
   const isRepost = status.reblog != null
@@ -68,7 +69,9 @@ export const StatusView: React.FC<Props> = ({ status, style }) => {
               ))}
             </View>
           ) : null}
-          <StatusActionBar status={status} style={tw`mt-2`} />
+          {showActions ? (
+            <StatusActionBar status={status} style={tw`mt-2`} />
+          ) : null}
         </View>
       </View>
     </View>

@@ -15,7 +15,9 @@ export const TimelineView: React.FC<Props> = ({ timeline }) => {
   return (
     <FlatList
       {...props}
-      renderItem={({ item }) => <StatusListItem status={item} key={item.id} />}
+      renderItem={({ item }) => (
+        <StatusListItem status={item} showActions={true} key={item.id} />
+      )}
     />
   )
 }
