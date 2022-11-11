@@ -17,7 +17,6 @@ type Props = {
 
 export const StatusView: React.FC<Props> = ({ status, style, showActions }) => {
   const { colors } = useTheme()
-  const [innerWidth, setInnerWidth] = React.useState(0)
   const isRepost = status.reblog != null
   const displayStatus = status.reblog ?? status
   return (
@@ -39,12 +38,7 @@ export const StatusView: React.FC<Props> = ({ status, style, showActions }) => {
           size={30}
           style={tw`mr-3 mt-[4px]`}
         />
-        <View
-          style={tw`grow`}
-          onLayout={({ nativeEvent }) =>
-            setInnerWidth(nativeEvent.layout.width)
-          }
-        >
+        <View style={tw`flex-shrink-1`}>
           {displayStatus.account.displayName !== "" ? (
             <Text variant="titleSmall">
               {displayStatus.account.displayName}
@@ -54,10 +48,7 @@ export const StatusView: React.FC<Props> = ({ status, style, showActions }) => {
             {`@${displayStatus.account.acct}`}
           </Text>
           {displayStatus.content.length > 0 ? (
-            <HtmlText
-              style={[{ width: innerWidth }]}
-              text={displayStatus.content}
-            />
+            <HtmlText text={displayStatus.content} />
           ) : null}
           {displayStatus.mediaAttachments.length > 0 ? (
             <View style={tw`mt-3`}>
