@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Komondor",
-    "slug": "komondor",
+    "slug": "komondor-mastodon",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
