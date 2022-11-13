@@ -1,16 +1,16 @@
-const IS_DEV = process.env.APP_VARIANT === "development"
-const bundleIdentifier = IS_DEV
-  ? "app.komondor.mastodon.dev"
-  : "app.komondor.mastodon"
+const IS_PROD = process.env.APP_VARIANT === "production"
+const bundleIdentifier = IS_PROD
+  ? "app.komondor.mastodon"
+  : "app.komondor.mastodon.dev"
 
 export default {
   expo: {
-    name: "Komondor",
+    name: IS_PROD ? "Komondor" : "Komondor Dev",
     slug: "komondor-mastodon",
     version: "1.0.0",
     orientation: "portrait",
     icon: "./assets/images/icon.png",
-    scheme: "komondor",
+    scheme: IS_PROD ? "komondor" : "komondor-dev",
     userInterfaceStyle: "automatic",
     splash: {
       image: "./assets/images/splash.png",
