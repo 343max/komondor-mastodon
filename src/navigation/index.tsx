@@ -15,6 +15,7 @@ import { useTheme } from "react-native-paper"
 import { NotificationsScreen } from "../screens/NotificationsScreen"
 import { acountHeaderButton } from "../components/AccountMenu"
 import { Ionicons } from "@expo/vector-icons"
+import { ListsScreen } from "../screens/ListsScreen"
 
 export default function Navigation({
   colorScheme,
@@ -89,6 +90,17 @@ function BottomTabNavigator() {
               size={28}
               color={color}
             />
+          ),
+          headerLeft: acountHeaderButton,
+        }}
+      />
+      <BottomTab.Screen
+        name="Lists"
+        component={ListsScreen}
+        options={{
+          title: "Lists",
+          tabBarIcon: ({ color }) => (
+            <Ionicons name="list" size={28} color={color} />
           ),
           headerLeft: acountHeaderButton,
         }}
