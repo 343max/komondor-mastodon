@@ -1,3 +1,8 @@
+const IS_DEV = process.env.APP_VARIANT === "development"
+const bundleIdentifier = IS_DEV
+  ? "app.komondor.mastodon.dev"
+  : "app.komondor.mastodon"
+
 export default {
   expo: {
     name: "Komondor",
@@ -19,7 +24,7 @@ export default {
     ios: {
       buildNumber: "3",
       supportsTablet: true,
-      bundleIdentifier: "app.komondor.mastodon",
+      bundleIdentifier,
       config: {
         usesNonExemptEncryption: false,
       },
@@ -30,7 +35,7 @@ export default {
         foregroundImage: "./assets/images/adaptive-icon.png",
         backgroundColor: "#ffffff",
       },
-      package: "app.komondor.mastodon",
+      package: bundleIdentifier,
       blockedPermissions: ["android.permission.RECORD_AUDIO"],
     },
     web: {
