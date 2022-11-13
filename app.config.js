@@ -31,10 +31,6 @@ export default {
     },
     android: {
       versionCode: 2,
-      adaptiveIcon: {
-        foregroundImage: "./assets/images/adaptive-icon.png",
-        backgroundColor: "#ffffff",
-      },
       package: bundleIdentifier,
       blockedPermissions: ["android.permission.RECORD_AUDIO"],
     },

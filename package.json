@@ -8,8 +8,7 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "test": "jest --watchAll",
-    "generate:icon": "rsvg-convert AppIcon.svg > assets/images/icon.png",
-    "generate:adaptive-icon": "rsvg-convert AdaptiveAppIcon.svg > assets/images/adaptive-icon.png"
+    "generate:icon": "rsvg-convert AppIcon.svg > assets/images/icon.png"
   },
   "jest": {
     "preset": "jest-expo"
