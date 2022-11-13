@@ -1,4 +1,4 @@
-{
+export default {
   "expo": {
     "name": "Komondor",
     "slug": "komondor-mastodon",
