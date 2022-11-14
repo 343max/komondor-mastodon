@@ -1,5 +1,5 @@
 import React from "react"
-import { View } from "react-native"
+import { TouchableOpacity, View } from "react-native"
 import { Button, HelperText, TextInput } from "react-native-paper"
 import { tw } from "../lib/tw"
 import { domainRegex } from "../lib/domainRegex"
@@ -13,6 +13,8 @@ import { useCurrentAccountId } from "../hooks/useCurrentAccountId"
 import { getOAuthEndpoints } from "../lib/getOAuthEndpoints"
 
 export const LoginScreen: React.FC = () => {
+  const invalidDomainError = "Please make sure to enter the instance name"
+
   const [domain, setDomain] = React.useState("")
   const [redirectUri] = React.useState(makeRedirectUri)
   const [app, setApp] = React.useState<
@@ -32,7 +34,14 @@ export const LoginScreen: React.FC = () => {
     headerLeft: () => <Button onPress={goBack}>Cancel</Button>,
   })
 
-  const validDomain = React.useMemo(() => domain.match(domainRegex), [domain])
+  const validDomain =
+    React.useMemo(() => domain.match(domainRegex), [domain]) !== null
+
+  React.useEffect(() => {
+    if (validDomain && error === invalidDomainError) {
+      setError(undefined)
+    }
+  }, [validDomain])
 
   const handleLogin = () => {
     if (!validDomain) {
@@ -40,6 +49,7 @@ export const LoginScreen: React.FC = () => {
     }
 
     const f = async () => {
+      setError(undefined)
       const masto = await mastoLogin({ url: `https://${domain}` })
 
       const app = await masto.apps.create({
@@ -54,6 +64,10 @@ export const LoginScreen: React.FC = () => {
       console.error(error)
       setError(`${error}`)
     })
+  }
+
+  const handleDisabledPress = () => {
+    setError(invalidDomainError)
   }
 
   const onSuccess: React.ComponentProps<
@@ -109,9 +123,15 @@ export const LoginScreen: React.FC = () => {
         {error}
       </HelperText>
       <View style={tw`mt-4 mx-4`}>
-        <Button mode="contained" disabled={!validDomain} onPress={handleLogin}>
-          Login
-        </Button>
+        <TouchableOpacity disabled={validDomain} onPress={handleDisabledPress}>
+          <Button
+            mode="contained"
+            disabled={!validDomain}
+            onPress={handleLogin}
+          >
+            Login
+          </Button>
+        </TouchableOpacity>
       </View>
     </View>
   )
