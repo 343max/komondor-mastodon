@@ -57,8 +57,8 @@ const AccountHeaderButton: React.FC = () => {
           <Menu.Item
             key={a.appId}
             onPress={() => {
-              setCurrentAccountId(a.appId)
               dismiss()
+              setCurrentAccountId(a.appId)
             }}
             title={fullUserName(a)}
             leadingIcon={() => <Avatar uri={a.avatarStatic} size={28} />}
@@ -67,8 +67,8 @@ const AccountHeaderButton: React.FC = () => {
       <Menu.Item
         title="Add account..."
         onPress={() => {
-          navigate("Login")
           dismiss()
+          navigate("Login")
         }}
         leadingIcon={() => (
           <SimpleLineIcons name="wrench" size={24} color={colors.primary} />
@@ -77,6 +77,7 @@ const AccountHeaderButton: React.FC = () => {
       <Menu.Item
         title="Remove all accounts..."
         onPress={() => {
+          dismiss()
           Alert.alert(
             "Remove All Accounts?",
             "This will remove all logged in accounts from the app. Are you sure?",
