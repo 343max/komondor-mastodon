@@ -8,10 +8,10 @@
     "development": {
       "developmentClient": true,
       "distribution": "internal",
-      "autoIncrement": true,
       "env": {
         "APP_VARIANT": "development"
-      }
+      },
+      "ios": { "simulator": true }
     },
     "production": {
       "autoIncrement": true,
