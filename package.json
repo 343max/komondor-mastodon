@@ -35,7 +35,7 @@
     "expo-status-bar": "~1.4.2",
     "expo-system-ui": "~2.0.1",
     "expo-web-browser": "~12.0.0",
-    "masto": "^4.4.1",
+    "masto": "^4.6.2",
     "node-html-parser": "^6.1.1",
     "react": "18.1.0",
     "react-dom": "18.1.0",
