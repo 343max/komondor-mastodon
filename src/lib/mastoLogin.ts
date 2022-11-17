@@ -10,7 +10,7 @@ import {
 export const mastoLogin = async (config: MastoConfig): Promise<MastoClient> => {
   const serializer = new SerializerNativeImpl()
   const http = new HttpNativeImpl(config, serializer)
-  const instance = await new InstanceRepository(http, "1.0.0").fetch()
+  const instance = await new InstanceRepository(http, "1.0.0", config).fetch()
   const ws = new WsNodejsImpl(
     instance.urls.streamingApi,
     instance.version,
