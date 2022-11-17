@@ -2,6 +2,7 @@ import * as WebBrowser from "expo-web-browser"
 import { useAuthRequest } from "expo-auth-session"
 import React from "react"
 import { getOAuthEndpoints } from "../lib/getOAuthEndpoints"
+import { useAuthUrlEventListener } from "../hooks/useAuthUrlEventListener"
 
 type Props = {
   clientId: string
@@ -34,6 +35,11 @@ export const LoginFlowWebView: React.FC<Props> = ({
     getOAuthEndpoints(domain)
   )
 
+  // expo auth session has an awful longstanding bug, where expo auth session in android prod apps
+  // simply will not return a successful login https://github.com/expo/expo/issues/12044
+  // so this parses the callback url manually and return the result
+  const androidCustomResponse = useAuthUrlEventListener()
+
   React.useEffect(() => {
     if (request) {
       promptAsync()
@@ -41,17 +47,15 @@ export const LoginFlowWebView: React.FC<Props> = ({
   }, [request])
 
   React.useEffect(() => {
-    if (response) {
-      if (response.type === "success") {
-        onSuccess(
-          response.params["code"] as string,
-          response.params["state"] as string
-        )
-      } else if (["cancel", "dismiss", "error"].includes(response.type)) {
+    const r = androidCustomResponse ?? response
+    if (r) {
+      if (r.type === "success") {
+        onSuccess(r.params["code"] as string, r.params["state"] as string)
+      } else if (["cancel", "dismiss", "error"].includes(r.type)) {
         onCanceled()
       }
     }
-  }, [response])
+  }, [androidCustomResponse, response])
 
   return <></>
 }

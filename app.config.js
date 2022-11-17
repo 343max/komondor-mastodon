@@ -10,7 +10,7 @@ export default {
     version: "1.0.0",
     orientation: "portrait",
     icon: "./assets/images/icon.png",
-    scheme: IS_PROD ? "komondor" : "komondor-dev",
+    scheme: IS_PROD ? "app.komondor" : "app.komondor-dev",
     userInterfaceStyle: "automatic",
     splash: {
       image: "./assets/images/splash.png",
