@@ -1,13 +1,12 @@
 import React from "react"
 import { StatusListItem } from "./StatusListItem"
-import { Animated, FlatList, StatusBar } from "react-native"
+import { Animated, FlatList, View } from "react-native"
 import { usePaginator } from "../hooks/usePaginator"
 import { useCurrentAccountMeta } from "../hooks/useCurrentAccountMeta"
 import { fullUserName } from "../lib/fullUsername"
 import { useClearScrolling } from "../hooks/useClearScrolling"
 import { useSetOptions } from "../hooks/useSetOptions"
 import { tw } from "../lib/tw"
-import { useSafeAreaInsets } from "react-native-safe-area-context"
 
 type Props = {
   timeline: "home" | "public"
@@ -26,8 +25,6 @@ export const TimelineView: React.FC<Props> = ({ timeline }) => {
   const tabBarTranslation = React.useRef(new Animated.Value(0)).current
 
   const [headerHeight, setHeaderHeight] = React.useState(0)
-
-  const safeAreaInsets = useSafeAreaInsets()
 
   React.useEffect(() => {
     Animated.spring(headerTranslation, {
@@ -70,10 +67,16 @@ export const TimelineView: React.FC<Props> = ({ timeline }) => {
     <FlatList
       {...scrollProps}
       {...props}
-      contentInset={{ top: headerHeight - safeAreaInsets.top }}
       style={{ marginTop: -headerHeight }}
-      renderItem={({ item }) => (
-        <StatusListItem status={item} showActions={true} key={item.id} />
+      renderItem={({ item, index }) => (
+        <View
+          style={{
+            marginTop: index === 0 ? headerHeight : 0,
+          }}
+          key={item.id}
+        >
+          <StatusListItem status={item} showActions={true} />
+        </View>
       )}
     />
   )
