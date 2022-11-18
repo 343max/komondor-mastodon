@@ -1,11 +1,10 @@
 import React from "react"
 import { StatusListItem } from "./StatusListItem"
-import { Animated, FlatList, View } from "react-native"
+import { FlatList, View } from "react-native"
 import { usePaginator } from "../hooks/usePaginator"
 import { useCurrentAccountMeta } from "../hooks/useCurrentAccountMeta"
 import { fullUserName } from "../lib/fullUsername"
 import { useClearScrolling } from "../hooks/useClearScrolling"
-import { useSetOptions } from "../hooks/useSetOptions"
 import { tw } from "../lib/tw"
 import { useScrollingHeaderOptions } from "../hooks/useScrollingHeaderOptions"
 
@@ -17,8 +16,6 @@ export const TimelineView: React.FC<Props> = ({ timeline }) => {
   const props = usePaginator((client) =>
     timeline === "home" ? client.timelines.home : client.timelines.public
   )
-
-  const setOptions = useSetOptions()
 
   const [scrollProps, scrolledDown] = useClearScrolling()
 
@@ -38,7 +35,7 @@ export const TimelineView: React.FC<Props> = ({ timeline }) => {
     <FlatList
       {...scrollProps}
       {...props}
-      style={{ marginTop: -headerHeight }}
+      style={[tw`h-full`, { marginTop: -headerHeight }]}
       renderItem={({ item, index }) => (
         <View
           style={{
