@@ -89,7 +89,6 @@ const AccountHeaderButton: React.FC = () => {
                 onPress: () => {
                   removeAllAccounts().then(() => {
                     setCurrentAccountId(undefined)
-                    Alert.alert("Removed All Accounts")
                   })
                 },
               },
