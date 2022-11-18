@@ -22,7 +22,6 @@ export const TimelineView: React.FC<Props> = ({ timeline }) => {
   const [scrollProps, scrolledDown] = useClearScrolling()
 
   const headerTranslation = React.useRef(new Animated.Value(0)).current
-  const tabBarTranslation = React.useRef(new Animated.Value(0)).current
 
   const [headerHeight, setHeaderHeight] = React.useState(0)
 
@@ -31,11 +30,7 @@ export const TimelineView: React.FC<Props> = ({ timeline }) => {
       toValue: scrolledDown ? -headerHeight : 0,
       useNativeDriver: true,
     }).start()
-    Animated.timing(tabBarTranslation, {
-      toValue: scrolledDown ? 80 : 0,
-      useNativeDriver: true,
-    }).start()
-  }, [scrolledDown, headerTranslation, tabBarTranslation, headerHeight])
+  }, [scrolledDown, headerTranslation, headerHeight])
 
   const accountMeta = useCurrentAccountMeta()
   React.useEffect(() => {
@@ -58,10 +53,9 @@ export const TimelineView: React.FC<Props> = ({ timeline }) => {
         headerStyle: {
           transform: [{ translateY: headerTranslation }],
         },
-        tabBarStyle: [{ translateY: tabBarTranslation }],
       })
     }
-  }, [accountMeta, headerTranslation, tabBarTranslation])
+  }, [accountMeta, headerTranslation])
 
   return (
     <FlatList
