@@ -8,7 +8,9 @@
     "ios": "expo run:ios",
     "web": "expo start --web",
     "test": "jest --watchAll",
-    "generate:icon": "rsvg-convert AppIcon.svg > assets/images/icon.png"
+    "generate:icon": "rsvg-convert AppIcon.svg > assets/images/icon.png",
+    "eas:submit:ios": "eas build --profile production --platform ios --auto-submit",
+    "eas:submit:android": "eas build --profile production --platform android"
   },
   "jest": {
     "preset": "jest-expo"
