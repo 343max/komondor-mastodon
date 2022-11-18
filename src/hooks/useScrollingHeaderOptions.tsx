@@ -5,7 +5,7 @@ import { tw } from "../lib/tw"
 import { useHeaderOptions } from "./useHeaderOptions"
 
 export const useScrollingHeaderOptions = (
-  headerVisible: boolean,
+  headerHidden: boolean,
   callback?: () => BottomTabNavigationOptions,
   deps?: React.DependencyList
 ) => {
@@ -14,10 +14,10 @@ export const useScrollingHeaderOptions = (
 
   React.useEffect(() => {
     Animated.spring(headerTranslation, {
-      toValue: headerVisible ? 0 : -headerHeight,
+      toValue: headerHidden ? -headerHeight : 0,
       useNativeDriver: true,
     }).start()
-  }, [headerVisible, headerTranslation, headerHeight])
+  }, [headerHidden, headerTranslation, headerHeight])
 
   useHeaderOptions(() => {
     const outerOptions = callback ? callback() : {}
@@ -46,7 +46,7 @@ export const useScrollingHeaderOptions = (
         transform: [{ translateY: headerTranslation }],
       },
     }
-  }, [headerVisible, ...(deps ?? [])])
+  }, [headerHidden, ...(deps ?? [])])
 
   return { headerHeight }
 }
