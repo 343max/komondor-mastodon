@@ -1,6 +1,6 @@
 import { BottomTabNavigationOptions } from "@react-navigation/bottom-tabs"
 import React from "react"
-import { Animated } from "react-native"
+import { Animated, View } from "react-native"
 import { tw } from "../lib/tw"
 import { useHeaderOptions } from "./useHeaderOptions"
 
@@ -33,7 +33,13 @@ export const useScrollingHeaderOptions = (
             onLayout={({ nativeEvent }) => {
               setHeaderHeight(nativeEvent.layout.height)
             }}
-          />
+          >
+            {/* View on top of the navbar so we don't see the text above 
+            the navbar while it's animating */}
+            <View
+              style={tw`top-[-50px] h-[50px] w-full bg-white dark:bg-black`}
+            />
+          </Animated.View>
         )
       },
       headerStyle: {
