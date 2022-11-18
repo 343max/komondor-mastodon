@@ -10,9 +10,12 @@ import { StoredAccountMetaProvider } from "./src/hooks/useStoredMeta"
 import { ClientsProvider } from "./src/hooks/useClients"
 import { AccountMetaUpdater } from "./src/components/AccountMetaUpdater"
 import { CurrentAccountIdProvider } from "./src/hooks/useCurrentAccountId"
+import { useDeviceContext } from "twrnc"
+import { tw } from "./src/lib/tw"
 
 export default function App() {
   const colorScheme = useColorScheme()
+  useDeviceContext(tw)
 
   return (
     <Provider>

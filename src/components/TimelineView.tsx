@@ -1,10 +1,13 @@
 import React from "react"
 import { StatusListItem } from "./StatusListItem"
-import { FlatList } from "react-native"
+import { Animated, FlatList, View } from "react-native"
 import { usePaginator } from "../hooks/usePaginator"
-import { useHeaderOptions } from "../hooks/useHeaderOptions"
 import { useCurrentAccountMeta } from "../hooks/useCurrentAccountMeta"
 import { fullUserName } from "../lib/fullUsername"
+import { useClearScrolling } from "../hooks/useClearScrolling"
+import { useSetOptions } from "../hooks/useSetOptions"
+import { tw } from "../lib/tw"
+import { useScrollingHeaderOptions } from "../hooks/useScrollingHeaderOptions"
 
 type Props = {
   timeline: "home" | "public"
@@ -15,16 +18,36 @@ export const TimelineView: React.FC<Props> = ({ timeline }) => {
     timeline === "home" ? client.timelines.home : client.timelines.public
   )
 
+  const setOptions = useSetOptions()
+
+  const [scrollProps, scrolledDown] = useClearScrolling()
+
   const accountMeta = useCurrentAccountMeta()
-  if (accountMeta) {
-    useHeaderOptions({ headerTitle: fullUserName(accountMeta) })
-  }
+  const { headerHeight } = useScrollingHeaderOptions(
+    !scrolledDown,
+    () =>
+      !accountMeta
+        ? {}
+        : {
+            headerTitle: fullUserName(accountMeta),
+          },
+    [accountMeta]
+  )
 
   return (
     <FlatList
+      {...scrollProps}
       {...props}
-      renderItem={({ item }) => (
-        <StatusListItem status={item} showActions={true} key={item.id} />
+      style={{ marginTop: -headerHeight }}
+      renderItem={({ item, index }) => (
+        <View
+          style={{
+            marginTop: index === 0 ? headerHeight : 0,
+          }}
+          key={item.id}
+        >
+          <StatusListItem status={item} showActions={true} />
+        </View>
       )}
     />
   )

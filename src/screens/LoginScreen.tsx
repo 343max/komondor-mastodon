@@ -29,10 +29,13 @@ export const LoginScreen: React.FC = () => {
 
   const scopes = ["read", "write", "follow", "push"]
 
-  useHeaderOptions({
-    headerTitle: "Add Account",
-    headerLeft: () => <Button onPress={goBack}>Cancel</Button>,
-  })
+  useHeaderOptions(
+    () => ({
+      headerTitle: "Add Account",
+      headerLeft: () => <Button onPress={goBack}>Cancel</Button>,
+    }),
+    [goBack]
+  )
 
   const validDomain =
     React.useMemo(() => domain.match(domainRegex), [domain]) !== null
