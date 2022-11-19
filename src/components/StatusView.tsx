@@ -1,22 +1,32 @@
 import { EvilIcons } from "@expo/vector-icons"
 import { Status } from "masto"
 import React from "react"
-import { View, StyleProp, ViewStyle } from "react-native"
+import {
+  View,
+  StyleProp,
+  ViewStyle,
+  Pressable,
+  PressableProps,
+} from "react-native"
 import { Text, useTheme } from "react-native-paper"
 import { tw } from "../lib/tw"
 import { Avatar } from "./Avatar"
-import { MediaAttachmentView } from "./MediaAttachmentView"
-import { HtmlText } from "./HtmlText"
 import { StatusActionBar } from "./StatusActionBar"
 import { StatusContentView } from "./StatusContentView"
 
 type Props = {
   status: Status
   style?: StyleProp<ViewStyle> | undefined
-  showActions: boolean
+  showActions?: boolean
+  onPress?: PressableProps["onPress"]
 }
 
-export const StatusView: React.FC<Props> = ({ status, style, showActions }) => {
+export const StatusView: React.FC<Props> = ({
+  status,
+  style,
+  showActions = false,
+  onPress,
+}) => {
   const { colors } = useTheme()
   const isRepost = status.reblog != null
   const displayStatus = status.reblog ?? status
@@ -33,27 +43,29 @@ export const StatusView: React.FC<Props> = ({ status, style, showActions }) => {
           <Text variant="titleSmall">{status.account.displayName}</Text>
         </View>
       ) : null}
-      <View style={tw`flex-row w-full`}>
-        <Avatar
-          uri={displayStatus.account.avatarStatic}
-          size={30}
-          style={tw`mr-3 mt-[4px]`}
-        />
-        <View style={tw`flex-shrink-1`}>
-          {displayStatus.account.displayName !== "" ? (
-            <Text variant="titleSmall">
-              {displayStatus.account.displayName}
+      <Pressable onPress={onPress}>
+        <View style={tw`flex-row w-full`}>
+          <Avatar
+            uri={displayStatus.account.avatarStatic}
+            size={30}
+            style={tw`mr-3 mt-[4px]`}
+          />
+          <View style={tw`flex-shrink-1`}>
+            {displayStatus.account.displayName !== "" ? (
+              <Text variant="titleSmall">
+                {displayStatus.account.displayName}
+              </Text>
+            ) : null}
+            <Text variant="titleSmall" style={tw`opacity-60`}>
+              {`@${displayStatus.account.acct}`}
             </Text>
-          ) : null}
-          <Text variant="titleSmall" style={tw`opacity-60`}>
-            {`@${displayStatus.account.acct}`}
-          </Text>
-          <StatusContentView status={displayStatus} />
-          {showActions ? (
-            <StatusActionBar status={status} style={tw`mt-2`} />
-          ) : null}
+            <StatusContentView status={displayStatus} />
+            {showActions ? (
+              <StatusActionBar status={status} style={tw`mt-2`} />
+            ) : null}
+          </View>
         </View>
-      </View>
+      </Pressable>
     </View>
   )
 }
