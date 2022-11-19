@@ -1,44 +1,40 @@
 import React from "react"
 import { StatusListItem } from "./StatusListItem"
-import { Animated, FlatList, View } from "react-native"
-import { usePaginator } from "../hooks/usePaginator"
-import { useCurrentAccountMeta } from "../hooks/useCurrentAccountMeta"
-import { fullUserName } from "../lib/fullUsername"
+import { FlatList, View } from "react-native"
+import { PaginatorFn, usePaginator } from "../hooks/usePaginator"
 import { useClearScrolling } from "../hooks/useClearScrolling"
-import { useSetOptions } from "../hooks/useSetOptions"
 import { tw } from "../lib/tw"
 import { useScrollingHeaderOptions } from "../hooks/useScrollingHeaderOptions"
+import { Status } from "masto"
 
-type Props = {
-  timeline: "home" | "public"
+type Props<P> = {
+  timeline: PaginatorFn<P, Status>
+  headerTitle: string
+  autoHidingHeader?: boolean
 }
 
-export const TimelineView: React.FC<Props> = ({ timeline }) => {
-  const props = usePaginator((client) =>
-    timeline === "home" ? client.timelines.home : client.timelines.public
-  )
-
-  const setOptions = useSetOptions()
+export const TimelineView = <P, T>({
+  timeline,
+  headerTitle,
+  autoHidingHeader = false,
+}: Props<P>): ReturnType<React.FC> => {
+  const props = usePaginator(timeline)
 
   const [scrollProps, scrolledDown] = useClearScrolling()
 
-  const accountMeta = useCurrentAccountMeta()
   const { headerHeight } = useScrollingHeaderOptions(
-    !scrolledDown,
-    () =>
-      !accountMeta
-        ? {}
-        : {
-            headerTitle: fullUserName(accountMeta),
-          },
-    [accountMeta]
+    scrolledDown && autoHidingHeader,
+    () => ({
+      headerTitle,
+    }),
+    [headerTitle]
   )
 
   return (
     <FlatList
       {...scrollProps}
       {...props}
-      style={{ marginTop: -headerHeight }}
+      style={[tw`h-full`]}
       renderItem={({ item, index }) => (
         <View
           style={{

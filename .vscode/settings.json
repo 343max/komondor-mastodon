@@ -7,5 +7,5 @@
     "tw\\.\\w+`([^`]*)", // tw.xxx`...`
     "tw\\(.*?\\)`([^`]*)" // tw(Component)`...`
   ],
-  "cSpell.words": ["Masto"]
+  "cSpell.words": ["Ionicons", "Masto"]
 }

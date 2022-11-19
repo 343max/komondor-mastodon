@@ -3,9 +3,9 @@ import React from "react"
 import { useAsyncEffect } from "./useAsyncEffect"
 import { useSafeCurrentClient } from "./useSafeCurrentClient"
 
-export const usePaginator = <P, T>(
-  paginatorFn: (client: MastoClient) => Paginator<P, T[]>
-) => {
+export type PaginatorFn<P, T> = (client: MastoClient) => Paginator<P, T[]>
+
+export const usePaginator = <P, T>(paginatorFn: PaginatorFn<P, T>) => {
   const client = useSafeCurrentClient()
   const paginator: Paginator<P, T[]> = paginatorFn(client)
   const [items, setItems] = React.useState<T[]>([])
