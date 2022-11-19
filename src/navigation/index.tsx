@@ -18,6 +18,7 @@ import { accountHeaderButton } from "../components/AccountMenu"
 import { Ionicons } from "@expo/vector-icons"
 import { ListsScreen } from "../screens/ListsScreen"
 import { ListStatusesScreen } from "../screens/ListStatusesScreen"
+import { StatusDetailScreen } from "../screens/StatusScreen"
 
 export default function Navigation({
   colorScheme,
@@ -43,6 +44,11 @@ function RootNavigator() {
   return (
     <Stack.Navigator>
       <Stack.Screen name="Root" component={BottomTabNavigator} />
+      <Stack.Screen
+        name="StatusDetails"
+        component={StatusDetailScreen}
+        options={{ title: "Details" }}
+      />
       <Stack.Group screenOptions={{ presentation: "modal" }}>
         <Stack.Screen name="Login" component={LoginScreen} />
       </Stack.Group>

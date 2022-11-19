@@ -2,8 +2,8 @@ import React from "react"
 import { tw } from "../lib/tw"
 import { StatusView } from "./StatusView"
 
-type Props = Omit<React.ComponentProps<typeof StatusView>, "style">
+type Props = React.ComponentProps<typeof StatusView>
 
-export const StatusListItem = React.memo<Props>((props) => {
-  return <StatusView {...props} style={tw`w-full p-2`} />
+export const StatusListItem = React.memo<Props>(({ style, ...props }) => {
+  return <StatusView {...props} style={[style, tw`w-full p-2`]} />
 })

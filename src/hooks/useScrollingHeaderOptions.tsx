@@ -2,6 +2,7 @@ import React from "react"
 import { useUpdateHeaderOptions } from "./useHeaderOptions"
 import { useHeaderHeight } from "@react-navigation/elements"
 import { NativeStackNavigationOptions } from "@react-navigation/native-stack"
+import useColorScheme from "./useColorScheme"
 
 export const useScrollingHeaderOptions = (
   headerHidden: boolean,
@@ -14,13 +15,15 @@ export const useScrollingHeaderOptions = (
     if (headerHeight > visibleHeaderHeight) setVisibleHeaderHeight(headerHeight)
   }, [headerHeight])
 
+  const colorScheme = useColorScheme()
+
   useUpdateHeaderOptions(() => {
     const outerOptions = callback ? callback() : {}
     const options: NativeStackNavigationOptions = {
       ...outerOptions,
       headerTransparent: true,
       headerStyle: {
-        backgroundColor: "white",
+        backgroundColor: colorScheme === "light" ? "white" : "black",
       },
       headerShown: !headerHidden,
     }

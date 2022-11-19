@@ -6,6 +6,7 @@ import { useClearScrolling } from "../hooks/useClearScrolling"
 import { tw } from "../lib/tw"
 import { useScrollingHeaderOptions } from "../hooks/useScrollingHeaderOptions"
 import { Status } from "masto"
+import { useStackNavigation } from "../hooks/useStackNavigation"
 
 type Props<P> = {
   timeline: PaginatorFn<P, Status>
@@ -19,8 +20,8 @@ export const TimelineView = <P, T>({
   autoHidingHeader = false,
 }: Props<P>): ReturnType<React.FC> => {
   const props = usePaginator(timeline)
-
   const [scrollProps, scrolledDown] = useClearScrolling()
+  const { push } = useStackNavigation()
 
   const { headerHeight } = useScrollingHeaderOptions(
     scrolledDown && autoHidingHeader,
@@ -42,7 +43,11 @@ export const TimelineView = <P, T>({
           }}
           key={item.id}
         >
-          <StatusListItem status={item} showActions={true} />
+          <StatusListItem
+            status={item}
+            showActions={true}
+            onPress={() => push("StatusDetails", { status: item })}
+          />
         </View>
       )}
     />
