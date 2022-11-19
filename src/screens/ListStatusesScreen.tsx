@@ -3,7 +3,7 @@ import { NoAccountView } from "../components/NoAccountView"
 import { SafeCurrentClientProvider } from "../hooks/useSafeCurrentClient"
 import { TimelineView } from "../components/TimelineView"
 import { List } from "masto"
-import { RouteProp, useNavigation, useRoute } from "@react-navigation/native"
+import { RouteProp, useRoute } from "@react-navigation/native"
 import { RootStackParamList } from "../../types"
 
 export type ListStatusesScreenParams = {
@@ -18,7 +18,7 @@ export const ListStatusesScreen: React.FC = () => {
       <TimelineView
         timeline={(client) => client.timelines.getListIterable(params.list.id)}
         headerTitle={params.list.title}
-        autoHidingHeader={false}
+        autoHidingHeader={true}
       />
     </SafeCurrentClientProvider>
   )

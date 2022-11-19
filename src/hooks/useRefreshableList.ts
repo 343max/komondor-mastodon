@@ -15,7 +15,6 @@ export const useRefreshableList = <T>(
       setRefreshing(true)
       try {
         const items = await refreshFn(client)
-        console.log(items)
         setItems(items)
       } catch (error) {
         throw error

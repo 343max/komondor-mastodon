@@ -4,7 +4,7 @@ import { Button, HelperText, TextInput } from "react-native-paper"
 import { tw } from "../lib/tw"
 import { domainRegex } from "../lib/domainRegex"
 import { useNavigation } from "@react-navigation/native"
-import { useHeaderOptions } from "../hooks/useHeaderOptions"
+import { useUpdateHeaderOptions } from "../hooks/useHeaderOptions"
 import { makeRedirectUri, exchangeCodeAsync } from "expo-auth-session"
 import { mastoLogin } from "../lib/mastoLogin"
 import { LoginFlowWebView } from "../components/LoginFlowWebView"
@@ -29,7 +29,7 @@ export const LoginScreen: React.FC = () => {
 
   const scopes = ["read", "write", "follow", "push"]
 
-  useHeaderOptions(
+  useUpdateHeaderOptions(
     () => ({
       headerTitle: "Add Account",
       headerLeft: () => <Button onPress={goBack}>Cancel</Button>,

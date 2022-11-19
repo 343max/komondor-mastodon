@@ -3,6 +3,7 @@ import {
   NavigationContainer,
   DefaultTheme,
   DarkTheme,
+  useNavigation,
 } from "@react-navigation/native"
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
 import * as React from "react"
@@ -13,7 +14,7 @@ import { LoginScreen } from "../screens/LoginScreen"
 import { HomeTimelineScreen } from "../screens/HomeTimelineScreen"
 import { useTheme } from "react-native-paper"
 import { NotificationsScreen } from "../screens/NotificationsScreen"
-import { acountHeaderButton } from "../components/AccountMenu"
+import { accountHeaderButton } from "../components/AccountMenu"
 import { Ionicons } from "@expo/vector-icons"
 import { ListsScreen } from "../screens/ListsScreen"
 import { ListStatusesScreen } from "../screens/ListStatusesScreen"
@@ -41,16 +42,28 @@ const Stack = createNativeStackNavigator<RootStackParamList>()
 function RootNavigator() {
   return (
     <Stack.Navigator>
-      <Stack.Screen
-        name="Root"
-        component={BottomTabNavigator}
-        options={{ headerShown: false }}
-      />
-      <Stack.Screen name="List" component={ListStatusesScreen} />
+      <Stack.Screen name="Root" component={BottomTabNavigator} />
       <Stack.Group screenOptions={{ presentation: "modal" }}>
         <Stack.Screen name="Login" component={LoginScreen} />
       </Stack.Group>
     </Stack.Navigator>
+  )
+}
+
+const ListsStack = createNativeStackNavigator()
+
+function ListsNavigator() {
+  const { getParent } = useNavigation()
+
+  React.useEffect(() => {
+    getParent()!.setOptions({ headerShown: false })
+  }, [getParent])
+
+  return (
+    <ListsStack.Navigator>
+      <ListsStack.Screen name="Lists" component={ListsScreen} />
+      <ListsStack.Screen name="List" component={ListStatusesScreen} />
+    </ListsStack.Navigator>
   )
 }
 
@@ -63,11 +76,23 @@ const BottomTab = createBottomTabNavigator<RootTabParamList>()
 function BottomTabNavigator() {
   const { colors } = useTheme()
 
+  const { setOptions } = useNavigation()
+
+  const setHeaderShown = (headerShown: boolean) => {
+    setOptions({ headerShown })
+  }
+
   return (
     <BottomTab.Navigator
       initialRouteName="HomeTimeline"
+      screenListeners={{
+        focus: (e) => {
+          setHeaderShown(!(e.target ?? "").includes("ListsNavigator"))
+        },
+      }}
       screenOptions={{
         tabBarActiveTintColor: colors.primary,
+        headerShown: false,
       }}
     >
       <BottomTab.Screen
@@ -78,7 +103,7 @@ function BottomTabNavigator() {
           tabBarIcon: ({ color }) => (
             <Ionicons name="home-outline" size={28} color={color} />
           ),
-          headerLeft: acountHeaderButton,
+          headerLeft: accountHeaderButton,
         }}
       />
       <BottomTab.Screen
@@ -93,18 +118,16 @@ function BottomTabNavigator() {
               color={color}
             />
           ),
-          headerLeft: acountHeaderButton,
         }}
       />
       <BottomTab.Screen
-        name="Lists"
-        component={ListsScreen}
+        name="ListsNavigator"
+        component={ListsNavigator}
         options={{
           title: "Lists",
           tabBarIcon: ({ color }) => (
             <Ionicons name="list" size={28} color={color} />
           ),
-          headerLeft: acountHeaderButton,
         }}
       />
     </BottomTab.Navigator>

@@ -34,7 +34,7 @@ export const TimelineView = <P, T>({
     <FlatList
       {...scrollProps}
       {...props}
-      style={[tw`h-full`, { marginTop: -headerHeight }]}
+      style={[tw`h-full`]}
       renderItem={({ item, index }) => (
         <View
           style={{

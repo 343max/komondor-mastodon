@@ -1,52 +1,31 @@
-import { BottomTabNavigationOptions } from "@react-navigation/bottom-tabs"
 import React from "react"
-import { Animated, View } from "react-native"
-import { tw } from "../lib/tw"
-import { useHeaderOptions } from "./useHeaderOptions"
+import { useUpdateHeaderOptions } from "./useHeaderOptions"
+import { useHeaderHeight } from "@react-navigation/elements"
+import { NativeStackNavigationOptions } from "@react-navigation/native-stack"
 
 export const useScrollingHeaderOptions = (
   headerHidden: boolean,
-  callback?: () => BottomTabNavigationOptions,
+  callback?: () => NativeStackNavigationOptions,
   deps?: React.DependencyList
 ) => {
-  const headerTranslation = React.useRef(new Animated.Value(0)).current
-  const [headerHeight, setHeaderHeight] = React.useState(0)
-
+  const headerHeight = useHeaderHeight()
+  const [visibleHeaderHeight, setVisibleHeaderHeight] = React.useState(0)
   React.useEffect(() => {
-    Animated.spring(headerTranslation, {
-      toValue: headerHidden ? -headerHeight : 0,
-      useNativeDriver: true,
-    }).start()
-  }, [headerHidden, headerTranslation, headerHeight])
+    if (headerHeight > visibleHeaderHeight) setVisibleHeaderHeight(headerHeight)
+  }, [headerHeight])
 
-  useHeaderOptions(() => {
+  useUpdateHeaderOptions(() => {
     const outerOptions = callback ? callback() : {}
-    return {
+    const options: NativeStackNavigationOptions = {
       ...outerOptions,
-      headerBackground: () => {
-        return (
-          <Animated.View
-            style={[
-              tw`w-full h-full bg-white dark:bg-black`,
-              { transform: [{ translateY: headerTranslation }] },
-            ]}
-            onLayout={({ nativeEvent }) => {
-              setHeaderHeight(nativeEvent.layout.height)
-            }}
-          >
-            {/* View on top of the navbar so we don't see the text above 
-            the navbar while it's animating */}
-            <View
-              style={tw`top-[-50px] h-[50px] w-full bg-white dark:bg-black`}
-            />
-          </Animated.View>
-        )
-      },
+      headerTransparent: true,
       headerStyle: {
-        transform: [{ translateY: headerTranslation }],
+        backgroundColor: "white",
       },
+      headerShown: !headerHidden,
     }
+    return options
   }, [headerHidden, ...(deps ?? [])])
 
-  return { headerHeight }
+  return { headerHeight: visibleHeaderHeight }
 }

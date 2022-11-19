@@ -10,7 +10,7 @@ import { useNavigation } from "@react-navigation/native"
 import { Avatar } from "./Avatar"
 import { useStoredAccounts } from "../hooks/useStoredAccounts"
 
-export const acountHeaderButton = (props: {
+export const accountHeaderButton = (props: {
   tintColor?: string
   pressColor?: string
   pressOpacity?: number

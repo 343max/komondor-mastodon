@@ -7,7 +7,11 @@ import { Entypo } from "@expo/vector-icons"
 import { useNavigation } from "@react-navigation/native"
 
 export const ListsView: React.FC = () => {
-  const listProps = useRefreshableList((client) => client.lists.fetchAll())
+  const listProps = useRefreshableList(async (client) =>
+    (await client.lists.fetchAll()).sort((a, b) =>
+      a.title.localeCompare(b.title)
+    )
+  )
   const { navigate } = useNavigation()
 
   return (
