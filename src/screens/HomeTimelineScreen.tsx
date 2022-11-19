@@ -5,7 +5,7 @@ import { TimelineView } from "../components/TimelineView"
 import { useCurrentAccountMeta } from "../hooks/useCurrentAccountMeta"
 import { fullUserName } from "../lib/fullUsername"
 
-export const HomeTimelineScreen = () => {
+export const HomeTimelineScreen: React.FC = () => {
   const accountMeta = useCurrentAccountMeta()
 
   const headerTitle = React.useMemo(

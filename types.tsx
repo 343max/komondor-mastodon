@@ -9,6 +9,7 @@ import {
   NavigatorScreenParams,
 } from "@react-navigation/native"
 import { NativeStackScreenProps } from "@react-navigation/native-stack"
+import { ListStatusesScreenParams } from "./src/screens/ListStatusesScreen"
 
 declare global {
   namespace ReactNavigation {
@@ -19,6 +20,7 @@ declare global {
 export type RootStackParamList = {
   Root: NavigatorScreenParams<RootTabParamList> | undefined
   Login: undefined
+  List: ListStatusesScreenParams
 }
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> =
