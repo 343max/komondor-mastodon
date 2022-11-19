@@ -78,16 +78,18 @@ function BottomTabNavigator() {
 
   const { setOptions } = useNavigation()
 
-  const setHeaderShown = (headerShown: boolean) => {
-    setOptions({ headerShown })
-  }
-
   return (
     <BottomTab.Navigator
       initialRouteName="HomeTimeline"
       screenListeners={{
         focus: (e) => {
-          setHeaderShown(!(e.target ?? "").includes("ListsNavigator"))
+          const target = e.target ?? ""
+          setOptions({
+            headerShown: !target.includes("ListsNavigator"),
+            headerLeft: target.includes("HomeTimeline")
+              ? accountHeaderButton
+              : undefined,
+          })
         },
       }}
       screenOptions={{
@@ -103,7 +105,6 @@ function BottomTabNavigator() {
           tabBarIcon: ({ color }) => (
             <Ionicons name="home-outline" size={28} color={color} />
           ),
-          headerLeft: accountHeaderButton,
         }}
       />
       <BottomTab.Screen
