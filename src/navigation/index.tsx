@@ -44,7 +44,11 @@ function RootNavigator() {
   return (
     <Stack.Navigator>
       <Stack.Screen name="Root" component={BottomTabNavigator} />
-      <Stack.Screen name="StatusDetails" component={StatusDetailScreen} />
+      <Stack.Screen
+        name="StatusDetails"
+        component={StatusDetailScreen}
+        options={{ title: "Details" }}
+      />
       <Stack.Group screenOptions={{ presentation: "modal" }}>
         <Stack.Screen name="Login" component={LoginScreen} />
       </Stack.Group>

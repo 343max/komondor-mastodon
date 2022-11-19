@@ -4,6 +4,8 @@ import { FlatList } from "react-native"
 import { StatusListItem } from "./StatusListItem"
 import { useStackNavigation } from "../hooks/useStackNavigation"
 import { tw } from "../lib/tw"
+import React from "react"
+import { sleep } from "../lib/sleep"
 
 type Props = {
   status: Status
@@ -20,9 +22,24 @@ export const StatusContextView: React.FC<Props> = ({ status: outerStatus }) => {
     return [...ancestors, status, ...descendants]
   })
 
+  const initialScrollIndex = React.useMemo(
+    () => listProps.data.findIndex(({ id }) => id === status.id),
+    [listProps.data]
+  )
+
+  const ref = React.useRef<FlatList<Status>>(null)
+
   return (
     <FlatList
+      ref={ref}
       {...listProps}
+      extraData={[status.id]}
+      initialScrollIndex={initialScrollIndex}
+      onScrollToIndexFailed={() =>
+        sleep(0.2).then(() =>
+          ref.current?.scrollToIndex({ index: initialScrollIndex })
+        )
+      }
       renderItem={({ item }) => (
         <StatusListItem
           style={
