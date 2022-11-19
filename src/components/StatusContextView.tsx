@@ -1,16 +1,17 @@
 import { Status } from "masto"
-import { StatusView } from "./StatusView"
 import { useRefreshableList } from "../hooks/useRefreshableList"
 import { FlatList } from "react-native"
 import { StatusListItem } from "./StatusListItem"
-import { useNavigation } from "@react-navigation/native"
+import { useStackNavigation } from "../hooks/useStackNavigation"
+import { tw } from "../lib/tw"
 
 type Props = {
   status: Status
 }
 
-export const StatusContextView: React.FC<Props> = ({ status }) => {
-  const { navigate } = useNavigation()
+export const StatusContextView: React.FC<Props> = ({ status: outerStatus }) => {
+  const status = outerStatus.reblog ?? outerStatus
+  const { push } = useStackNavigation()
   const listProps = useRefreshableList(async (client) => {
     const { ancestors, descendants } = await client.statuses.fetchContext(
       status.id
@@ -24,9 +25,16 @@ export const StatusContextView: React.FC<Props> = ({ status }) => {
       {...listProps}
       renderItem={({ item }) => (
         <StatusListItem
+          style={
+            item.id === status.id ? tw`bg-gray-300 dark:bg-gray-800` : undefined
+          }
           status={item}
           showActions={true}
-          onPress={() => navigate("StatusDetails", { status: item })}
+          onPress={
+            item.id === status.id
+              ? undefined
+              : () => push("StatusDetails", { status: item })
+          }
         />
       )}
     />
