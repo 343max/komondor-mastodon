@@ -53,7 +53,7 @@ export const StatusView: React.FC<Props> = ({
           </View>
         </Pressable>
       ) : null}
-      <Pressable onPress={pushAuthorProfile}>
+      <Pressable onPress={onPress}>
         <View style={tw`flex-row w-full`}>
           <Pressable onPress={pushAuthorProfile}>
             <Avatar
