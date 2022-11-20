@@ -14,8 +14,6 @@ class Http extends HttpNativeImpl {
   // masto Paginator has an error where params are sent via data
   // this works around this issue for now
   async request<T>(request: Request): Promise<Response<T>> {
-    console.log([request, typeof request.data])
-
     if (request.method === "get" && typeof request.data === "object") {
       return super.request({
         ...request,

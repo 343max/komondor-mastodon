@@ -2,6 +2,7 @@ import React from "react"
 import { useAsyncEffect } from "./useAsyncEffect"
 import { MastoClient } from "masto"
 import { useSafeCurrentClient } from "./useSafeCurrentClient"
+import { Haptics } from "../lib/haptics"
 
 export const useRefreshableList = <T>(
   refreshFn: (client: MastoClient) => Promise<T[]>
@@ -25,7 +26,12 @@ export const useRefreshableList = <T>(
     [client]
   )
 
+  const hapticRefresh = async () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
+    await refresh()
+  }
+
   useAsyncEffect(refresh, [refresh])
 
-  return { data: items, refreshing, onRefresh: refresh }
+  return { data: items, refreshing, onRefresh: hapticRefresh }
 }

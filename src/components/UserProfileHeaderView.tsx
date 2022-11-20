@@ -16,8 +16,7 @@ export const UserProfileHeaderView: React.FC<Props> = ({ user }) => {
       <AutoSizingImage
         resizeDirection="vertical"
         source={{ uri: user.header }}
-        style={tw`w-full h-10 bg-gray-600`}
-        resizeMode="contain"
+        style={tw`w-full h-28 bg-gray-600`}
       />
       <View style={tw`flex-row mx-4 mt-1 mb-5`}>
         <Avatar uri={user.avatar} size={80} style={tw`mt-[-20]`} />
