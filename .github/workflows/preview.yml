@@ -55,18 +55,20 @@ jobs:
         id: publish
         run: |
           eas update --auto --json --non-interactive > out.json
-          echo "id_ios=$(cat out.json | jq -r '.[] | select( .platform == "ios" ) | .id')"
           echo "id_ios=$(cat out.json | jq -r '.[] | select( .platform == "ios" ) | .id')" >> $GITHUB_OUTPUT
-
-      - name: Adding QR Code
-        run: echo '<details><summary>iOS QR</summary>![ios qr](https://qr.expo.dev/eas-update?appScheme=exp&host=u.expo.dev&updateId=${{ steps.publish.outputs.id_ios }})</details>' >> $GITHUB_STEP_SUMMARY
+          echo "id_android=$(cat out.json | jq -r '.[] | select( .platform == "android" ) | .id')" >> $GITHUB_OUTPUT
 
       - name: Create comment
         uses: peter-evans/create-or-update-comment@v2
         with:
           issue-number: ${{ github.event.pull_request.number }}
           body: |
+            To test this PR install [Expo Go](https://expo.dev/client) on your device and scan the QR code for your platform
             <details>
             <summary>iOS QR</summary>
-            <img src="https://qr.expo.dev/eas-update?appScheme=exp&host=u.expo.dev&updateId=${{ steps.publish.outputs.id_ios }}" width="200" height="200">
+            <img src="https://qr.expo.dev/eas-update?appScheme=exp&host=u.expo.dev&updateId=${{ steps.publish.outputs.id_ios }}" width="300" height="300">
+            </details>
+            <details>
+            <summary>Android QR</summary>
+            <img src="https://qr.expo.dev/eas-update?appScheme=exp&host=u.expo.dev&updateId=${{ steps.publish.outputs.id_android }}" width="300" height="300">
             </details>
