@@ -4,6 +4,7 @@ import { tw } from "../lib/tw"
 import { FlatList } from "react-native"
 import { StatusListItem } from "./StatusListItem"
 import { useStackNavigation } from "../hooks/useStackNavigation"
+import { UserProfileHeaderView } from "./UserProfileHeaderView"
 
 type Props = {
   user: Account
@@ -19,6 +20,7 @@ export const UserProfileView: React.FC<Props> = ({ user }) => {
     <FlatList
       {...listProps}
       style={[tw`h-full`]}
+      ListHeaderComponent={<UserProfileHeaderView user={user} />}
       renderItem={({ item }) => (
         <StatusListItem
           status={item}

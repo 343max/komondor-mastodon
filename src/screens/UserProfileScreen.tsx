@@ -13,7 +13,10 @@ export const UserProfileScreen: React.FC = () => {
   const { params } = useRoute<"UserProfile">()
 
   useUpdateHeaderOptions(
-    () => ({ headerTitle: params.user.displayName }),
+    () => ({
+      headerTransparent: true,
+      headerBackTitle: "",
+    }),
     [params.user]
   )
 

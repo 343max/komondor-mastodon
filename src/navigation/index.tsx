@@ -53,7 +53,7 @@ function RootNavigator() {
       <Stack.Screen
         name="UserProfile"
         component={UserProfileScreen}
-        options={{ title: "User" }}
+        options={{ title: "" }}
       />
       <Stack.Group screenOptions={{ presentation: "modal" }}>
         <Stack.Screen name="Login" component={LoginScreen} />
