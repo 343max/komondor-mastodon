@@ -42,5 +42,11 @@ export default {
         projectId: "55f72a26-e82e-49a0-9e7b-68d5efd0bc2d",
       },
     },
+    updates: {
+      url: "https://u.expo.dev/55f72a26-e82e-49a0-9e7b-68d5efd0bc2d",
+    },
+    runtimeVersion: {
+      policy: "sdkVersion",
+    },
   },
 }
