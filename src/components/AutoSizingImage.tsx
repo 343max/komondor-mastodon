@@ -36,17 +36,17 @@ export const AutoSizingImage: React.FC<Props> = ({
     }
   }, [imageSize, viewSize])
 
-  console.log([imageSize, viewSize, resizeStyle])
-
   return (
     <Image
       {...props}
       style={[style, resizeStyle]}
       onLoad={({ nativeEvent }) => {
-        setImageSize({
-          width: nativeEvent.source.width,
-          height: nativeEvent.source.height,
-        })
+        const s = nativeEvent.source
+        if (s.width > 1 && s.height > 1)
+          setImageSize({
+            width: s.width,
+            height: s.height,
+          })
       }}
       onLayout={({ nativeEvent }) => {
         setViewSize({
