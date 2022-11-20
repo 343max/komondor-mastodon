@@ -19,7 +19,7 @@ export const UserProfileHeaderView: React.FC<Props> = ({ user }) => {
         style={tw`w-full h-10 bg-gray-600`}
         resizeMode="contain"
       />
-      <View style={tw`flex-row mx-4 mt-1`}>
+      <View style={tw`flex-row mx-4 mt-1 mb-5`}>
         <Avatar uri={user.avatar} size={80} style={tw`mt-[-20]`} />
         <View style={tw`flex-col ml-2 flex-shrink-1`}>
           {user.displayName !== "" ? (
