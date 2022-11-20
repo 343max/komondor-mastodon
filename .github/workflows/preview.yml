@@ -1,0 +1,72 @@
+name: Create preview
+on:
+  pull_request:
+    paths:
+      - "package.json"
+      - "app.json"
+      - "**/*.js"
+      - "**/*.ts"
+      - "**/*.tsx"
+      - "assets/**"
+jobs:
+  update:
+    name: EAS Update
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check for EXPO_TOKEN
+        run: |
+          if [ -z "${{ secrets.EXPO_TOKEN }}" ]; then
+            echo "You must provide an EXPO_TOKEN secret linked to this project's Expo account in this repo's secrets. Learn more: https://docs.expo.dev/eas-update/github-actions"
+            exit 1
+          fi
+
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+          cache: npm
+          cache-dependency-path: package-lock.json
+
+      - name: Setup Expo
+        uses: expo/expo-github-action@v7
+        with:
+          expo-version: latest
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: Find npm cache
+        id: npm-cache-path
+        run: echo "dir=$(npm config get cache)" >> $GITHUB_OUTPUT
+
+      - name: Restore cache
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.npm-cache-path.outputs.dir }}
+          key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: ${{ runner.os }}-npm-
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Publish update
+        id: publish
+        run: |
+          eas update --auto --json --non-interactive > out.json
+          echo "id_ios=$(cat out.json | jq -r '.[] | select( .platform == "ios" ) | .id')"
+          echo "id_ios=$(cat out.json | jq -r '.[] | select( .platform == "ios" ) | .id')" >> $GITHUB_OUTPUT
+
+      - name: Adding QR Code
+        run: echo '<details><summary>iOS QR</summary>![ios qr](https://qr.expo.dev/eas-update?appScheme=exp&host=u.expo.dev&updateId=${{ steps.publish.outputs.id_ios }})</details>' >> $GITHUB_STEP_SUMMARY
+
+      - name: Create comment
+        uses: peter-evans/create-or-update-comment@v2
+        with:
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            <details>
+            <summary>iOS QR</summary>
+            <img src="https://qr.expo.dev/eas-update?appScheme=exp&host=u.expo.dev&updateId=${{ steps.publish.outputs.id_ios }}" width="200" height="200">
+            </details>
