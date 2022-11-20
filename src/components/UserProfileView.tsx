@@ -1,10 +1,31 @@
-import { Text } from "react-native-paper"
 import { Account } from "masto"
+import { usePaginator } from "../hooks/usePaginator"
+import { tw } from "../lib/tw"
+import { FlatList } from "react-native"
+import { StatusListItem } from "./StatusListItem"
+import { useStackNavigation } from "../hooks/useStackNavigation"
 
 type Props = {
   user: Account
 }
 
 export const UserProfileView: React.FC<Props> = ({ user }) => {
-  return <Text>{user.displayName}</Text>
+  const listProps = usePaginator((client) =>
+    client.accounts.getStatusesIterable(user.id, { excludeReplies: false })
+  )
+  const { push } = useStackNavigation()
+
+  return (
+    <FlatList
+      {...listProps}
+      style={[tw`h-full`]}
+      renderItem={({ item }) => (
+        <StatusListItem
+          status={item}
+          showActions={true}
+          onPress={() => push("StatusDetails", { status: item })}
+        />
+      )}
+    />
+  )
 }
