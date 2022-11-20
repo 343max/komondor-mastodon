@@ -5,25 +5,20 @@ import { Text } from "react-native-paper"
 import { tw } from "../lib/tw"
 import { Video } from "expo-av"
 import { ResizeMode } from "../../node_modules/expo-av/build/Video.types"
+import { AutoSizingImage } from "./AutoSizingImage"
 
 type Props = {
   attachment: Attachment
 }
 
 const ImageAttachment: React.FC<Props> = ({ attachment }) => {
-  const [height, setHeight] = React.useState(1)
   const meta = attachment.meta?.small ?? { width: 16, height: 9 }
   return (
-    <Image
-      onLayout={({ nativeEvent }) => {
-        setHeight(
-          Math.round(
-            (nativeEvent.layout.width / (meta.width ?? 100)) * meta.height
-          )
-        )
-      }}
+    <AutoSizingImage
+      imageSize={meta}
+      resizeDirection="vertical"
       source={{ uri: attachment.previewUrl }}
-      style={[tw`w-full`, { height }]}
+      style={[tw`w-full`]}
     />
   )
 }

@@ -11,6 +11,7 @@ import {
 import { NativeStackScreenProps } from "@react-navigation/native-stack"
 import { ListStatusesScreenParams } from "./src/screens/ListStatusesScreen"
 import { StatusDetailScreenParams } from "./src/screens/StatusScreen"
+import { UserProfileScreenParams } from "./src/screens/UserProfileScreen"
 
 declare global {
   namespace ReactNavigation {
@@ -24,6 +25,7 @@ export type RootStackParamList = {
   Lists: undefined
   List: ListStatusesScreenParams
   StatusDetails: StatusDetailScreenParams
+  UserProfile: UserProfileScreenParams
 }
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> =

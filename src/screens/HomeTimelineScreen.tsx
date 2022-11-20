@@ -1,9 +1,8 @@
 import React from "react"
-import { NoAccountView } from "../components/NoAccountView"
-import { SafeCurrentClientProvider } from "../hooks/useSafeCurrentClient"
 import { TimelineView } from "../components/TimelineView"
 import { useCurrentAccountMeta } from "../hooks/useCurrentAccountMeta"
 import { fullUserName } from "../lib/fullUsername"
+import { SafeClientProvider } from "../components/SafeClientProvider"
 
 export const HomeTimelineScreen: React.FC = () => {
   const accountMeta = useCurrentAccountMeta()
@@ -14,12 +13,12 @@ export const HomeTimelineScreen: React.FC = () => {
   )
 
   return (
-    <SafeCurrentClientProvider fallback={<NoAccountView />}>
+    <SafeClientProvider>
       <TimelineView
         timeline={(client) => client.timelines.home}
         headerTitle={headerTitle}
         autoHidingHeader={true}
       />
-    </SafeCurrentClientProvider>
+    </SafeClientProvider>
   )
 }

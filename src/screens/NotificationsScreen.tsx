@@ -1,11 +1,11 @@
 import { NotificationsTimelineView } from "../components/NotificationsListView"
-import { SafeCurrentClientProvider } from "../hooks/useSafeCurrentClient"
 import { NoAccountView } from "../components/NoAccountView"
+import { SafeClientProvider } from "../components/SafeClientProvider"
 
 export const NotificationsScreen: React.FC = () => {
   return (
-    <SafeCurrentClientProvider fallback={<NoAccountView />}>
+    <SafeClientProvider>
       <NotificationsTimelineView />
-    </SafeCurrentClientProvider>
+    </SafeClientProvider>
   )
 }

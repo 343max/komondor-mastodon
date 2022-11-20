@@ -19,6 +19,7 @@ import { Ionicons } from "@expo/vector-icons"
 import { ListsScreen } from "../screens/ListsScreen"
 import { ListStatusesScreen } from "../screens/ListStatusesScreen"
 import { StatusDetailScreen } from "../screens/StatusScreen"
+import { UserProfileScreen } from "../screens/UserProfileScreen"
 
 export default function Navigation({
   colorScheme,
@@ -48,6 +49,11 @@ function RootNavigator() {
         name="StatusDetails"
         component={StatusDetailScreen}
         options={{ title: "Details" }}
+      />
+      <Stack.Screen
+        name="UserProfile"
+        component={UserProfileScreen}
+        options={{ title: "" }}
       />
       <Stack.Group screenOptions={{ presentation: "modal" }}>
         <Stack.Screen name="Login" component={LoginScreen} />
