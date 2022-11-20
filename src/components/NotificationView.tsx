@@ -1,10 +1,11 @@
 import { Notification } from "masto"
-import { View } from "react-native"
+import { Pressable, View } from "react-native"
 import { Text } from "react-native-paper"
 import { tw } from "../lib/tw"
 import { Avatar } from "./Avatar"
 import { StatusView } from "./StatusView"
 import { StatusContentView } from "./StatusContentView"
+import { useStackNavigation } from "../hooks/useStackNavigation"
 
 type Props = { notification: Notification }
 
@@ -27,16 +28,26 @@ const getDescription = ({ type, account, status }: Notification): string => {
 }
 
 export const NotificationView: React.FC<Props> = ({ notification }) => {
+  const { push } = useStackNavigation()
+  const pushUserProfile = () =>
+    push("UserProfile", { user: notification.account })
+
   return (
     <View style={tw`p-2 w-full`}>
       <View style={tw`flex-row`}>
-        <Avatar
-          uri={notification.account.avatarStatic}
-          size={30}
-          style={tw`mr-2`}
-        />
+        <Pressable onPress={pushUserProfile}>
+          <Avatar
+            uri={notification.account.avatarStatic}
+            size={30}
+            style={tw`mr-2`}
+          />
+        </Pressable>
         <View style={tw`flex-shrink-1 flex-grow`}>
-          <Text style={tw`flex-shrink-1`}>{getDescription(notification)}</Text>
+          <Pressable onPress={pushUserProfile}>
+            <Text style={tw`flex-shrink-1`}>
+              {getDescription(notification)}
+            </Text>
+          </Pressable>
           {notification.status ? (
             <StatusContentView status={notification.status} style={tw`mt-2`} />
           ) : null}
