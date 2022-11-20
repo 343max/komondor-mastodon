@@ -1,12 +1,11 @@
 import React from "react"
-import { NoAccountView } from "../components/NoAccountView"
-import { SafeCurrentClientProvider } from "../hooks/useSafeCurrentClient"
 import { ListsView } from "../components/ListsView"
+import { SafeClientProvider } from "../components/SafeClientProvider"
 
 export const ListsScreen: React.FC = () => {
   return (
-    <SafeCurrentClientProvider fallback={<NoAccountView />}>
+    <SafeClientProvider>
       <ListsView />
-    </SafeCurrentClientProvider>
+    </SafeClientProvider>
   )
 }
