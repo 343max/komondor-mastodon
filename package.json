@@ -10,7 +10,7 @@
     "test": "jest --watchAll",
     "generate:icon": "rsvg-convert AppIcon.svg > assets/images/icon.png",
     "eas:submit:ios": "eas build --profile production --platform ios --auto-submit",
-    "eas:submit:android": "eas build --profile production --platform android"
+    "eas:submit:android": "eas build --profile production --platform android --auto-submit"
   },
   "jest": {
     "preset": "jest-expo"
