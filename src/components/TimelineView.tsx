@@ -36,19 +36,19 @@ export const TimelineView = <P, T>({
       {...scrollProps}
       {...props}
       style={[tw`h-full`]}
-      renderItem={({ item, index }) => (
+      ListHeaderComponent={
         <View
           style={{
-            marginTop: index === 0 ? headerHeight : 0,
+            height: headerHeight,
           }}
-          key={item.id}
-        >
-          <StatusListItem
-            status={item}
-            showActions={true}
-            onPress={() => push("StatusDetails", { status: item })}
-          />
-        </View>
+        />
+      }
+      renderItem={({ item }) => (
+        <StatusListItem
+          status={item}
+          showActions={true}
+          onPress={() => push("StatusDetails", { status: item })}
+        />
       )}
     />
   )
