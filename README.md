@@ -5,6 +5,7 @@ a Very Alpha Mastodon Client for iOS and Android
 # Download
 
 - [iOS](https://testflight.apple.com/join/2F0rpOWu)
+- [Android](https://play.google.com/store/apps/details?id=app.komondor.mastodon)
 
 # Development Setup
 
