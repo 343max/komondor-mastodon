@@ -4,10 +4,15 @@ import { useAsyncEffect } from "./useAsyncEffect"
 import { useSafeCurrentClient } from "./useSafeCurrentClient"
 import { Haptics } from "../lib/haptics"
 import { FlatListProps } from "react-native"
+import { removedDuplicates } from "../lib/removeDuplicates"
 
-export type PaginatorFn<P, T> = (client: MastoClient) => Paginator<P, T[]>
+type Identifiable = { id: string }
 
-export const usePaginator = <P, T>(
+export type PaginatorFn<P, T extends Identifiable> = (
+  client: MastoClient
+) => Paginator<P, T[]>
+
+export const usePaginator = <P, T extends Identifiable>(
   paginatorFn: PaginatorFn<P, T>
 ): Omit<FlatListProps<T>, "renderItem"> => {
   const client = useSafeCurrentClient()
@@ -55,7 +60,7 @@ export const usePaginator = <P, T>(
         : async () => {
             const newItems = handleNext(await paginator.next())
             if (newItems.length > 0) {
-              setItems((i) => [...i, ...newItems])
+              setItems((i) => removedDuplicates([...i, ...newItems]))
             }
           },
     [paginator, setItems, endOfList]
