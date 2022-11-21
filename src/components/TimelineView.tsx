@@ -36,6 +36,8 @@ export const TimelineView = <P, T>({
       {...scrollProps}
       {...props}
       style={[tw`h-full`]}
+      progressViewOffset={headerHeight}
+      removeClippedSubviews={true}
       ListHeaderComponent={
         <View
           style={{
@@ -43,13 +45,17 @@ export const TimelineView = <P, T>({
           }}
         />
       }
-      renderItem={({ item }) => (
-        <StatusListItem
-          status={item}
-          showActions={true}
-          onPress={() => push("StatusDetails", { status: item })}
-        />
-      )}
+      extraData={[headerHeight]}
+      listKey="id"
+      renderItem={({ item }) => {
+        return (
+          <StatusListItem
+            status={item}
+            showActions={true}
+            onPress={() => push("StatusDetails", { status: item })}
+          />
+        )
+      }}
     />
   )
 }

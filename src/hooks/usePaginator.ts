@@ -19,10 +19,6 @@ export const usePaginator = <P, T>(
 
   const [refreshing, setRefreshing] = React.useState(false)
 
-  React.useEffect(() => {
-    console.log(items.length)
-  }, [items])
-
   const handleNext = (result: IteratorResult<T[]>): T[] => {
     if (result.done) {
       setEndOfList(true)
