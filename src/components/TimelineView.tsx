@@ -48,6 +48,7 @@ export const TimelineView = <P, T>({
       listKey="id"
       initialNumToRender={5}
       maxToRenderPerBatch={8}
+      windowSize={15}
       renderItem={({ item }) => {
         return (
           <StatusListItem
