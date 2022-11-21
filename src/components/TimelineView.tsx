@@ -37,7 +37,6 @@ export const TimelineView = <P, T>({
       {...props}
       style={[tw`h-full`]}
       progressViewOffset={headerHeight}
-      removeClippedSubviews={true}
       ListHeaderComponent={
         <View
           style={{
@@ -47,6 +46,8 @@ export const TimelineView = <P, T>({
       }
       extraData={[headerHeight]}
       listKey="id"
+      initialNumToRender={5}
+      maxToRenderPerBatch={8}
       renderItem={({ item }) => {
         return (
           <StatusListItem
