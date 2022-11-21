@@ -10,18 +10,28 @@ import {
 } from "masto"
 
 class Http extends HttpNativeImpl {
-  // TODO: update to masto 4.6.5
-  // masto Paginator has an error where params are sent via data
-  // this works around this issue for now
   async request<T>(request: Request): Promise<Response<T>> {
-    if (request.method === "get" && typeof request.data === "object") {
-      return super.request({
-        ...request,
-        params: request.data,
-        data: undefined,
-      })
-    } else {
-      return super.request(request)
+    // requests can include https://domains.tld which confuses the fetch method
+    // therefore we remove that part
+    const url = request.url.replace(/^https?:\/\/[^\/]+/, "")
+
+    // TODO: update to masto 4.6.5
+    // masto Paginator has an error where params are sent via data
+    // this works around this issue for now
+    const newRequest =
+      request.method === "get" && typeof request.data === "object"
+        ? {
+            ...request,
+            params: request.data,
+            data: undefined,
+            url,
+          }
+        : { ...request, url }
+
+    const response = await super.request<T>(newRequest)
+    return {
+      ...response,
+      headers: { ...response.headers, link: response.headers.Link },
     }
   }
 }
