@@ -10,12 +10,12 @@ export const useCurrentClient = () => {
   const { accountTokens } = useStoredAccounts()
   const { getClient } = useClients()
   const [currentClient, setCurrentClient] = React.useState<
-    MastoClient | undefined
+    MastoClient | undefined | null
   >()
 
   useAsyncEffect(async () => {
     if (accountId == undefined) {
-      setCurrentClient(undefined)
+      setCurrentClient(null)
     } else {
       const token = accountTokens.find(({ appId }) => appId === accountId)
       if (token) {
