@@ -86,7 +86,7 @@ export const StatusView: React.FC<Props> = ({
         </Pressable>
       </View>
       <GestureMenu
-        style={tw`absolute right-20 top-3`}
+        style={tw`absolute right-6 top-3 pl-20`}
         setScrollingEnabled={setScrollingEnabled}
       />
     </View>

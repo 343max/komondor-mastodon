@@ -31,11 +31,11 @@ const MenuItemView: React.FC<ItemProps> = ({
   highlighted,
   updateMeasurements,
 }) => {
-  const measureProps = useMeasure<View>(updateMeasurements)
+  const [measureProps] = useMeasure<View>(updateMeasurements)
 
   return (
     <View
-      style={[tw`p-2`, highlighted ? tw`bg-red-500` : tw`bg-black`]}
+      style={[tw`p-5`, highlighted ? tw`bg-red-500` : tw`bg-black`]}
       {...measureProps}
     >
       <Text>{item.label}</Text>
@@ -78,6 +78,7 @@ export const MenuView: React.FC<Props> = ({
           await sleep(0.1)
         }
         setUnhighlighted(false)
+        await menuItems[highlightedEntry].action()
         dismiss()
       }
     }
@@ -90,7 +91,7 @@ export const MenuView: React.FC<Props> = ({
       <View
         style={[
           style,
-          tw`bg-black border-solid border-2 border-gray-800 rounded absolute w-40 right-2`,
+          tw`bg-black border-solid border-2 border-gray-800 rounded absolute w-40 right-2 bottom-10`,
         ]}
       >
         {menuItems.map((item, index) => (

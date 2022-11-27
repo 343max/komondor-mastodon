@@ -12,24 +12,34 @@ export type Measurements = {
 
 export const useMeasure = <T extends View>(
   onLayout: (measurements: Measurements) => void
-): {
-  ref: React.RefObject<T>
-  onLayout: () => void
-} => {
+): [
+  {
+    ref: React.RefObject<T>
+    onLayout: () => void
+  },
+  Measurements | undefined
+] => {
+  const [measurements, setMeasurements] = React.useState<Measurements>()
   const ref = React.useRef<T>(null)
 
-  return {
-    ref,
-    onLayout: () =>
-      ref.current?.measure(
-        (
-          x: number,
-          y: number,
-          width: number,
-          height: number,
-          pageX: number,
-          pageY: number
-        ) => onLayout({ x, y, width, height, pageX, pageY })
-      ),
-  }
+  return [
+    {
+      ref,
+      onLayout: () =>
+        ref.current?.measure(
+          (
+            x: number,
+            y: number,
+            width: number,
+            height: number,
+            pageX: number,
+            pageY: number
+          ) => {
+            onLayout({ x, y, width, height, pageX, pageY })
+            setMeasurements({ x, y, width, height, pageX, pageY })
+          }
+        ),
+    },
+    measurements,
+  ]
 }
