@@ -22,6 +22,7 @@ export const TimelineView = <P, T>({
   const props = usePaginator(timeline)
   const [scrollProps, scrolledDown] = useClearScrolling()
   const { push } = useStackNavigation()
+  const [scrollEnabled, setScrollEnabled] = React.useState(true)
 
   const { headerHeight } = useScrollingHeaderOptions(
     scrolledDown && autoHidingHeader,
@@ -37,6 +38,7 @@ export const TimelineView = <P, T>({
       {...props}
       style={[tw`h-full`]}
       progressViewOffset={headerHeight}
+      scrollEnabled={scrollEnabled}
       ListHeaderComponent={
         <View
           style={{
@@ -54,6 +56,7 @@ export const TimelineView = <P, T>({
           <StatusListItem
             status={item}
             showActions={true}
+            setScrollingEnabled={setScrollEnabled}
             onPress={() => push("StatusDetails", { status: item })}
           />
         )
