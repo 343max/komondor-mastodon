@@ -91,7 +91,7 @@ export const MenuView: React.FC<Props> = ({
       <View
         style={[
           style,
-          tw`bg-black border-solid border-2 border-gray-800 rounded absolute w-40 right-2 bottom-10`,
+          tw`bg-black border-solid border-2 border-gray-800 rounded absolute w-55 right-2 bottom-10`,
         ]}
       >
         {menuItems.map((item, index) => (

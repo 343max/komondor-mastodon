@@ -7,11 +7,11 @@ import {
   ViewStyle,
   Pressable,
   PressableProps,
+  Share,
 } from "react-native"
 import { Text, useTheme } from "react-native-paper"
 import { tw } from "../lib/tw"
 import { Avatar } from "./Avatar"
-import { StatusActionBar } from "./StatusActionBar"
 import { StatusContentView } from "./StatusContentView"
 import { useStackNavigation } from "../hooks/useStackNavigation"
 import { GestureMenu } from "./GestureMenu/GestureMenu"
@@ -78,17 +78,27 @@ export const StatusView: React.FC<Props> = ({
                 </Text>
               </Pressable>
               <StatusContentView status={displayStatus} />
-              {showActions ? (
-                <StatusActionBar status={status} style={tw`mt-2`} />
-              ) : null}
             </View>
           </View>
         </Pressable>
       </View>
-      <GestureMenu
-        style={tw`absolute right-6 top-3 pl-20`}
-        setScrollingEnabled={setScrollingEnabled}
-      />
+      {showActions ? (
+        <GestureMenu
+          style={tw`absolute right-6 top-3 pl-20`}
+          setScrollingEnabled={setScrollingEnabled}
+          menuItems={[
+            {
+              label: "Share",
+              action: () => Share.share({ url: status.url ?? status.uri }),
+            },
+            {
+              label: "Share Debug Information",
+              action: () =>
+                Share.share({ message: JSON.stringify(status, undefined, 2) }),
+            },
+          ]}
+        />
+      ) : null}
     </View>
   )
 }

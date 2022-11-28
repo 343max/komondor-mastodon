@@ -6,6 +6,7 @@ import { MenuItem, MenuView } from "./MenuView"
 type Props = {
   style?: StyleProp<ViewStyle>
   setScrollingEnabled?: (enabled: boolean) => void
+  menuItems: MenuItem[]
 }
 
 export type GestureMenuState = {
@@ -16,6 +17,7 @@ export type GestureMenuState = {
 export const GestureMenu: React.FC<Props> = ({
   style,
   setScrollingEnabled = () => {},
+  menuItems,
 }) => {
   const [state, setState] = React.useState<GestureMenuState | null>(null)
   const panResponder = React.useRef(
@@ -50,15 +52,6 @@ export const GestureMenu: React.FC<Props> = ({
   }, [state?.action])
 
   const dismiss = React.useCallback(() => setState(null), [setState])
-
-  const menuItems = React.useMemo<MenuItem[]>(
-    () => [
-      { label: "Say hello", action: () => console.log("Hello!") },
-      { label: "Say good bye", action: () => console.log("Good bye!") },
-      { label: "Say something", action: () => console.log("Something!") },
-    ],
-    []
-  )
 
   return (
     <View style={style} {...panResponder.panHandlers}>
